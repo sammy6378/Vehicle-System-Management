@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mailer Confirmation</title>
+    <%- include("style.ejs") %>
+</head>
+
+<body>
+    <header>
+        <h1>Hello There <%= user %></h1> <br>
+    </header>
+
+    <main>
+        <h3>This is to inform you that you have registered an account with Lexus Vehicle Company</h3>
+        <p>Please click on the button below to activate your account</p> <br>
+        <a href="http://192.168.137.1:8000/verify" class="btn">Confirm Email</a>
+    </main>
+
+    <footer>
+        <p>Have a great day👌</p>
+        <img src="https://www.1stformationsblog.co.uk/wp-content/uploads/2020/01/Email-Image-1200x900.jpg" alt="emailLogo" width="300px">
+        <p>We are Thrilled to serve you.For any enquery Reach to our customer support email</p>
+        <p>Customer Support Email:  <a href="mailto:samuelMwangi202@gmail.com ">vehiclesupport@gmail.com</a></p>
+        <p>Copyright &copy; 2024 BrandRestraunt Organization</p>
+    </footer>
+</body>
+</html>

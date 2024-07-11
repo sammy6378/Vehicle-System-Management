@@ -1,0 +1,82 @@
+###
+
+GET http://localhost:8000
+
+###
+
+POST http://localhost:8000/user
+Content-Type: application/json
+
+{
+    
+    "full_name": "Samuel Mwangi",
+    "email": "samuel202mwangi@gmail.com",
+    "contact_phone": "0794204071",
+    "address": "45 Gituamba",
+    "role":"admin",
+    "created_at": "2024-07-02",
+    "updated_at": "2024-07-02"
+}
+
+###
+GET http://localhost:8000/users
+
+###
+GET http://localhost:8000/location/1
+
+###
+POST http://localhost:8000/register
+Content-Type: application/json
+
+{
+
+    "full_name": "Samuel Mwangi",
+    "user_name":"sammy",
+    "password":"@sammy*##",
+    "email": "reubennjihia202@gmail.com",
+    "contact_phone": "0794204071",
+    "address": "45 Gituamba",
+    "role":"admin"
+}
+
+###
+POST http://localhost:8000/login
+Content-Type: application/json
+
+{
+    "email":"reubennjihia202@gmail.com",
+    "password":"@sammy*##"
+}
+
+
+###
+Get http://localhost:8000/vehiclespecs
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJzYW1teSJ9.OdyoxLs2ImXvOjuMZS19j9obwfisZAq2nvLrm2qhoJ8
+
+###
+Get http://localhost:8000/vehicles
+
+
+###
+POST http://localhost:8000/vehiclespec
+Content-Type: application/json
+
+{
+
+  "manufacturer": "Honda",
+  "model": "CBR600RR",
+  "year": 2022,
+  "status": "Available",
+  "price": 12000,
+  "price_type": "USD",
+  "location": "Los Angeles, CA",
+  "time": "2023-08-15",
+  "transmission": "Manual",
+  "mileage": "500 miles",
+  "fuel_type": "Gasoline",
+  "type": "motorcycle",
+  "engine_capacity": "599cc",
+  "seating_capacity": 2,
+  "color": "Red",
+  "features": "ABS, Adjustable Suspension"
+}

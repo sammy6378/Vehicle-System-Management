@@ -1,0 +1,56 @@
+
+html{
+  scroll-behavior: smooth;
+}
+.modal {
+  display: none;
+}
+
+.modal-active {
+  display: block;
+}
+
+.vehicle-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes fadeInOutBack {
+  0% {
+    transform: translateX(0px) translateY(10px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0px) translateY(10px);
+    opacity: 0;
+  }
+}
+
+.animate-vehicle {
+  animation: fadeInOutBack 6s ease-in-out infinite;
+}
+
+
+@media  screen and (max-width: 768px){
+  .bar{
+      visibility: hidden;
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transform: translateX(-15%);
+      transition: opacity .4s ease-in-out, transform .4s ease-in-out;
+      z-index: 700;
+  }
+    .navMenu{
+      visibility:visible;
+      background:#429f9e;
+      border-radius: 0px 10px 10px 0px;
+      opacity: 1;
+      transform: translateX(0%);
+      transition: opacity .4s ease-in-out, transform .4s ease-in-out;
+    }
+}
+

@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm"
 import db from "../drizzle/db"
 import { bookings, payments, TIPayments, vehicle } from "../drizzle/schema"
 import { number } from "zod"
-const stripe = require('stripe')(process.env.STRIPE_SECRET)
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 // get all payements
 export const getpayments = async ( )=>{

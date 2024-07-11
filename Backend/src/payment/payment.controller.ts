@@ -31,40 +31,7 @@ export const createPayments = {
       );
     }
   },
-  //testing of checkout session
-
-  async testCreateCheckoutSession(c: Context) {
-    try {
-      // For testing, we'll use hardcodd values
-      const bookingId = 10;
-      const amount = 10000; // $100
-      console.log(
-        `Testing checkout session inpts for bookingId: ${bookingId}, amount: ${amount}`
-      );
-
-      const session = await paymentService.createCheckoutSession(
-        bookingId,
-        amount
-      );
-      ///trying to update data on mytables once successful
-      await paymentService.handleSuccessfulPayment(session.id);
-
-      return c.json({
-        success: true,
-        sessionId: session.id,
-        checkoutUrl: session.url,
-      });
-    } catch (error) {
-      console.error("Error creating checkout session:", error);
-      return c.json(
-        { success: false, error: "Failed to create checkout session" },
-        500
-      );
-    }
-  },
-
-  ///end of test
-
+ 
   async handleWebhook(c: Context) {
     const sig = c.req.header("stripe-signature");
     const rawBody = await c.req.raw.text();

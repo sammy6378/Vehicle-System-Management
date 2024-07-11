@@ -72,7 +72,6 @@ export const createPayment = () => {
           .values({
             booking_id: bookingId,
             amount: amountTotal / 100,
-            payment_date: new Date().toISOString(), // Add the payment_date property
             payment_status: "Approved",
             payment_method: session.payment_method_types[0],
             transaction_id: session.payment_intent,

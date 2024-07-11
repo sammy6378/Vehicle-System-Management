@@ -100,7 +100,7 @@ export const payments = pgTable('payments', {
     booking_id: integer('booking_id').notNull().references(() => bookings.booking_id,{onDelete:"cascade"}),
     amount: integer('amount').notNull(),
     payment_status: bookingStatus('payment_status').default('Pending').notNull(),
-    payment_date: date('payment_date').notNull(),
+    payment_date: timestamp('payment_date').defaultNow(),
     payment_method: varchar('payment_method').notNull(),
     transaction_id: integer('transaction_id').notNull(),
     created_at: timestamp('created_at').default(sql`NOW()`).notNull(),

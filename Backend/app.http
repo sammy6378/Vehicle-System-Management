@@ -30,13 +30,12 @@ Content-Type: application/json
 
 {
 
-    "full_name": "Samuel Mwangi",
-    "user_name":"sammy",
-    "password":"@sammy*##",
-    "email": "reubennjihia202@gmail.com",
-    "contact_phone": "0794204071",
-    "address": "45 Gituamba",
-    "role":"admin"
+    "full_name": "David Macharia",
+    "user_name":"Davy",
+    "password":"@davy*##",
+    "email": "kdavidmacharia8485@gmail.com",
+    "contact_phone": "0742545572",
+    "address": "0400 Kitale"
 }
 
 ###
@@ -44,14 +43,15 @@ POST http://localhost:8000/login
 Content-Type: application/json
 
 {
-    "email":"reubennjihia202@gmail.com",
-    "password":"@sammy*##"
+    "email":"mukirisimon22@gmail.com",
+    "password":"@simo*##"
 }
 
 
 ###
-Get http://localhost:8000/vehiclespecs
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJzYW1teSJ9.OdyoxLs2ImXvOjuMZS19j9obwfisZAq2nvLrm2qhoJ8
+Get http://localhost:8000/vehiclespec/5
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VyX25hbWUiOiJzaW1tb04iLCJyb2xlIjoidXNlciIsImV4cCI6MTcyMDk1ODA1MX0.tAk2xEA0lbgBPyaClKv2UNmB1l-hj4Ba-QUAkmnhRJM
+
 
 ###
 Get http://localhost:8000/vehicles
@@ -80,3 +80,7 @@ Content-Type: application/json
   "color": "Red",
   "features": "ABS, Adjustable Suspension"
 }
+
+###
+Get http://localhost:8000/bookings
+

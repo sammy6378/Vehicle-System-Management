@@ -11,7 +11,19 @@ export const getVehicles = async ( )=>{
 // get vehicle by id
 export const getVehicle = async ( id:number)=>{
     return await db.query.vehicleSpecifications.findFirst({
-    where:eq(vehicleSpecifications.vehiclespec_id,id)})
+    where:eq(vehicleSpecifications.vehiclespec_id,id),
+    with:{
+        vehicles:{
+            columns:{
+                vehicle_id:true,
+                rental_rate:true,
+                availability:true
+            }
+        }
+    }
+})
+    
+
 }
 
 // create vehicle specifaction

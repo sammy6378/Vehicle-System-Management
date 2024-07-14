@@ -4,7 +4,7 @@ import { useAuthUserMutation } from "../../services/service";
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from "../Auth/Authslice";
 import { useDispatch } from "react-redux";
-import { FadeLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 
 type formData = {
     email: string;
@@ -24,7 +24,8 @@ function Login() {
         setLoading(true);
         try {
             const response = await userLogin(data).unwrap();
-            dispatch(login({ user: response.user, token: response.token }));
+            const { token, user_id, user_name, role } = response;
+            dispatch(login({ token, user_id, user_name, role }));
             navigate('/dashboard');
         } catch (error) {
             console.error("Failed to login:", error);
@@ -78,7 +79,7 @@ function Login() {
                             className="w-full bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center justify-center"
                             disabled={loading}
                         >
-                            {loading ? <FadeLoader color="#ffffff" height={2} width={2} /> : "Login Now"}
+                            {loading ? <PulseLoader color="#ffffff" /> : "Login Now"}
                         </button>
                     </form>
                     <p className="text-center mt-4 text-gray-600">Not a member? <Link to="/register" className="text-purple-600 hover:text-purple-800">Signup Now</Link></p>

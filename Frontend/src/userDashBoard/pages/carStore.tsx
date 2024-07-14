@@ -1,11 +1,13 @@
-import { TVehicleSpec, useGetVehicleSpecQuery } from "../../services/service";
+import { TVehicle, TVehicleSpec, useGetVehicleSpecQuery } from "../../services/service";
 import { FaCar, FaCogs, FaRoad, FaStar } from 'react-icons/fa';
 import { HashLoader } from 'react-spinners';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { authService } from "../../services/service";
 
 function CarDash() {
   const { data: VehicleSpec } = useGetVehicleSpecQuery();
+  const { data:vehicles } = authService.useGetVehiclesQuery();
 
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,7 +23,16 @@ function CarDash() {
     }, 3000);
   }, []);
 
-  const filteredVehicles = VehicleSpec?.filter((vehicle: TVehicleSpec) => {
+  const combineData = () => {
+    if (!VehicleSpec || !vehicles) return [];
+
+    return VehicleSpec.map((spec: TVehicleSpec) => {
+      const vehicle = vehicles.find((v: TVehicle) => v.vehiclespec_id === spec.vehiclespec_id);
+      return { ...spec, ...vehicle };
+    });
+  };
+
+  const filteredVehicles = combineData().filter((vehicle) => {
     const isPriceMatch = () => {
       if (priceRange === "all") return true;
       if (priceRange === "<20000") return vehicle.price < 20000;
@@ -89,25 +100,27 @@ function CarDash() {
                   <HashLoader color="#17ed84" />
                 </div>
               ) : (
-                filteredVehicles?.map((vehicle: TVehicleSpec) => (
-                  <div key={vehicle.vehiclespec_id} className="vehicle-card bg-white py-4 px-4 rounded-lg text-left">
+                filteredVehicles?.map((vehicle) => (
+                  <div key={vehicle.vehiclespec_id} className="vehicle-card bg-white pb-4 rounded-lg text-left">
                     <Link to={`/vehicle/${vehicle.vehiclespec_id}`}>
-                      <div className="relative">
+                      <div className="relative overflow-hidden">
                         <img src={vehicle.image} alt="Vehicle" className="w-full h-40 object-cover rounded-t-lg cursor-pointer transition-all duration-300 hover:scale-110" />
-                        <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">{vehicle.status}</div>
+                        <div className={`absolute top-2 left-2 text-white text-xs px-2 py-1 rounded ${vehicle.availability ? 'bg-green-500' : 'bg-red-500'}`}>
+                          {vehicle.availability ? 'Available' : 'Booked'}
+                        </div>
                         <div className="absolute top-2 right-2 bg-gray-900 text-white text-xs px-2 py-1 rounded flex items-center">
                           <FaStar className="w-3 h-4 mr-1 text-orange-400" />
                         </div>
                       </div>
                     </Link>
 
-                    <div className="mt-4">
-                      <h3 className="text-lg font-semibold text-gray-900">{vehicle.price}/- <span className="text-sm text-gray-600">{vehicle.price_type}</span></h3>
+                    <div className="mt-4 px-4 ">
+                      <h3 className="text-lg font-semibold text-gray-900">{vehicle.price}/day- <span className="text-sm text-gray-600">{vehicle.price_type}</span></h3>
                       <h4 className="text-sm text-gray-500 mt-1">{vehicle.model}</h4>
                       <p className="text-sm text-gray-400">{vehicle.location} • {vehicle.time}</p>
                     </div>
                     <hr />
-                    <div className="mt-4 flex items-center justify-between">
+                    <div className="mt-4 flex items-center justify-between px-4 ">
                       <div className="flex items-center space-x-1 text-gray-500">
                         <span className="flex items-center text-xs"><FaCogs className="w-4 h-4 mr-1" /> {vehicle.transmission}</span>
                         <span className="flex items-center text-xs"><FaRoad className="w-4 h-4 mr-1" /> {vehicle.mileage}</span>
@@ -115,7 +128,7 @@ function CarDash() {
                       </div>
                     </div>
                     <hr />
-                    <div className="mt-4 flex items-center justify-between">
+                    <div className="mt-4 flex items-center justify-between px-4 ">
                       <Link to={`/vehicle/${vehicle.vehiclespec_id}`} className="bg-gray-500 px-4 text-white py-2 rounded text-sm">Details</Link>
                       <Link to={`/vehicle/${vehicle.vehiclespec_id}/payments`} className="text-sm text-white font-medium bg-blue-600 px-4 py-2 rounded">Book Now</Link>
                     </div>

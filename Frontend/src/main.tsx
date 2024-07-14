@@ -70,6 +70,11 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
+    path: '/vehicle/:id/booking_details',
+    element:  <Layout><Payment /></Layout>,
+    errorElement: <Error />,
+  },
+  {
     path: '/success',
     element: <Success />,
     errorElement: <Error />,

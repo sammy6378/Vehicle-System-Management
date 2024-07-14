@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useGetUsersQuery,useCreateProfileMutation } from '../../services/service';
+import { useGetUsersQuery, useCreateProfileMutation } from '../../services/service';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/Store';
 import { TUser } from '../../services/service';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Profile = {
   name: string;
@@ -15,15 +17,16 @@ type Profile = {
   facebook: string;
   instagram: string;
   twitter: string;
-  image: string | null;
+  image: File | null;
 }
 
 const ProfileForm = () => {
   const { data: loggedUser, error, isLoading } = useGetUsersQuery();
-  const [createProfile] = useCreateProfileMutation()
+  const [createProfile] = useCreateProfileMutation();
 
-  const {user} = useSelector((state: RootState) => state.auth.user);
-      const {user_id} = user as TUser;
+  const authState = useSelector((state: RootState) => state.auth);
+  const user = authState.user as TUser | null;
+  const { user_id: UId } = user as TUser;
 
   const [profile, setProfile] = useState<Profile>({
     name: '',
@@ -40,24 +43,25 @@ const ProfileForm = () => {
   });
 
   useEffect(() => {
-    loggedUser?.map((user) => {
-    if (user && user.user_id === user_id) {
-      setProfile({
-        name: user.full_name,
-        username: user.user_name,
-        bio: '',
-        phone: user.contact_phone,
-        email: user.email,
-        address: user.address,
-        location: '',
-        facebook: '',
-        instagram: '',
-        twitter: '',
-        image: null,
-      });
+    if (loggedUser) {
+      const user = loggedUser.find((user) => user.user_id === UId);
+      if (user) {
+        setProfile({
+          name: user.full_name,
+          username: user.user_name,
+          bio: '',
+          phone: user.contact_phone,
+          email: user.email,
+          address: user.address,
+          location: '',
+          facebook: '',
+          instagram: '',
+          twitter: '',
+          image: null,
+        });
+      }
     }
-  });
-  }, [user]);
+  }, [loggedUser, UId]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -70,20 +74,28 @@ const ProfileForm = () => {
   const handleImageChange = (e: any) => {
     setProfile((prevProfile) => ({
       ...prevProfile,
-      image: URL.createObjectURL(e.target.files[0]),
+      image: e.target.files[0],
     }));
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const profileToSubmit = {
-      location: profile.location,
-      facebook: profile.facebook,
-      instagram: profile.instagram,
-      twitter: profile.twitter,
-      image: profile.image,
-    };
-    await createProfile(profileToSubmit).unwrap();
+    const formData = new FormData();
+    formData.append('location', profile.location);
+    formData.append('facebook', profile.facebook);
+    formData.append('instagram', profile.instagram);
+    formData.append('twitter', profile.twitter);
+    if (profile.image) {
+      formData.append('image', profile.image);
+    }
+
+    try {
+      const plainFormData = Object.fromEntries(formData)
+      await createProfile(plainFormData).unwrap();
+      toast.success('Profile saved successfully!');
+    } catch (error) {
+      toast.error('Failed to save profile.');
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -91,6 +103,7 @@ const ProfileForm = () => {
 
   return (
     <div className="w-full mx-auto p-10 bg-slate-200">
+      <ToastContainer />
       <h2 className="text-2xl font-bold mb-6">Profile Information</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         <div className="mb-4">
@@ -103,7 +116,7 @@ const ProfileForm = () => {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="bio">Bio</label>
-          <textarea name="bio" value={profile.bio} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500"/>
+          <textarea name="bio" value={profile.bio} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="phone">Phone</label>
@@ -120,7 +133,7 @@ const ProfileForm = () => {
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="image">Upload Image</label>
           <input type="file" name="image" onChange={handleImageChange} className="w-full px-3 py-2 border rounded-lg bg-white" />
-          {profile.image && <img src={profile.image} alt="Profile" className="mt-4 rounded-full h-32 w-32 object-cover" />}
+          {profile.image && <img src={URL.createObjectURL(profile.image)} alt="Profile" className="mt-4 rounded-full h-32 w-32 object-cover" />}
         </div>
         <div className="flex flex-col">
           <h1>Social</h1>

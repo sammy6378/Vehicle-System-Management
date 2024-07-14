@@ -10,6 +10,7 @@ const VehicleDetail = () => {
 
   const { id } = useParams();
   const { data: VehicleSpec } = useGetVehicleSpecQuery();
+
   const vehicle = VehicleSpec?.find(v => v.vehiclespec_id === Number(id));
 
   if (!vehicle) {
@@ -54,7 +55,7 @@ const VehicleDetail = () => {
         </div>
         <hr className="my-4" />
         <div className="mt-6 flex space-x-4">
-          <Link to={`/vehicle/${vehicle.vehiclespec_id}/payments`} className="bg-blue-600 text-white px-4 py-2 rounded">Pay Now</Link>
+          <Link to={`/vehicle/${vehicle.vehiclespec_id}/booking_details`} className="bg-blue-600 text-white px-4 py-2 rounded">Book Now</Link>
         </div>
       </div>
     </div>

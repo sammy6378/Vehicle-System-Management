@@ -8,6 +8,9 @@ export interface TAuth {
 export interface TAuthResponse {
     token: string;
     user: TUser;
+    user_id:number,
+    user_name:string,
+    role:string
 }
 
 export type TUser ={
@@ -76,6 +79,15 @@ export type TBooking ={
     booking_date: string;
     return_date:string;
     total_amount:number;
+    booking_period:string;
+    booking_status:string;
+}
+
+export type TVehicle ={
+    vehicle_id: number;
+    vehiclespec_id: number;
+    availability:string,
+    rental_rate: number;
 }
 
 // register service
@@ -125,7 +137,21 @@ export const authService =createApi({
             method: 'POST',
             body: newBooking
         })
-    })
+    }),
+    createPayment:builder.mutation<TBooking[],Partial<TBooking>>({
+        query: (newPayment) => ({
+            url: 'checkout-session',
+            method: 'POST',
+            body: newPayment
+        })
+    }),
+    getBookings:builder.query<TBooking[],void>({
+        query: () => 'bookings',
+    }),
+    getVehicles:builder.query<TVehicle[],void>({
+        query:() => 'vehicles'
+    }),
+    
 }) 
 })
 
@@ -138,4 +164,5 @@ export const {
     useGetVehicleSpecQuery,
     useCreateProfileMutation,
     useGetLocationQuery,
+    useCreateBookingMutation,
  } = authService;

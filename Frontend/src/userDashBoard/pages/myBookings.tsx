@@ -1,143 +1,85 @@
+import { authService, TUser, TVehicleSpec } from "../../services/service";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/Store";
+import { Link } from "react-router-dom";
 
 function Projects() {
-  return (
-    <div className="p-4">
-        <div className="text-gray-400 mb-4">
-            <a href="#" className="hover:text-white">Dashboard</a> / 
-            <span>All Bookings</span>
+    const { data: bookingData } = authService.useGetBookingsQuery();
+    const { data: userData } = authService.useGetUsersQuery();
+    const { data: vehicleData } = authService.useGetVehicleSpecQuery();
+
+    const authState = useSelector((state: RootState) => state.auth);
+    const user = authState.user as TUser | null;
+    const { user_id } = user as TUser;
+
+    const combineData = () => {
+        if (!bookingData || !userData || !vehicleData) return [];
+        const loggedInUser = userData.find((u: TUser) => u.user_id === user_id);
+
+        return bookingData.map((data) => {
+            const vehicle = vehicleData.find((v: TVehicleSpec) => v.vehiclespec_id === data.vehiclespec_id);
+            return {
+                ...data,
+                clientName: loggedInUser ? `${loggedInUser.full_name}` : '',
+                email: loggedInUser ? `${loggedInUser.email}` : '',
+                vehicleImage: vehicle ? vehicle.image : '',
+                vehicleModel: vehicle ? vehicle.model : '',
+            };
+        });
+    };
+
+    const combinedData = combineData();
+
+    return (
+        <div className="p-4">
+            <div className="text-gray-400 mb-4">
+                <Link to="/" className="hover:text-white">Dashboard</Link> / 
+                <span>All Bookings</span>
+            </div>
+
+            <h1 className="text-2xl font-semibold mb-6">All Bookings</h1>
+
+            {combinedData.length === 0 ? (
+                <div className="text-gray-400">You have not made any booking yet.</div>
+            ) : (
+                <div className="overflow-x-auto">
+                    <table className="min-w-full table-auto">
+                        <thead>
+                            <tr className="bg-gray-800">
+                                <th className="px-4 py-2 text-left">Vehicle</th>
+                                <th className="px-4 py-2 text-left">Client Name</th>
+                                <th className="px-4 py-2 text-left">Email</th>
+                                <th className="px-4 py-2 text-left">Booking Period</th>
+                                <th className="px-4 py-2 text-left">Booking Date</th>
+                                <th className="px-4 py-2 text-left">Return Date</th>
+                                <th className="px-4 py-2 text-left">Return Status</th>
+                                <th className="px-4 py-2 text-left">Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {combinedData.map((data) => (
+                                <tr key={data.booking_id} className="bg-gray-700">
+                                    <td className="px-4 py-2 flex items-center space-x-2">
+                                        <img src={data.vehicleImage} alt="Vehicle" className="w-14 h-10 rounded-sm" />
+                                        <span>{data.vehicleModel}</span>
+                                    </td>
+                                    <td className="px-4 py-2">{data.clientName}</td>
+                                    <td className="px-4 py-2">{data.email}</td>
+                                    <td className="px-4 py-2">{data.booking_period}</td>
+                                    <td className="px-4 py-2">{data.booking_date}</td>
+                                    <td className="px-4 py-2">{data.return_date}</td>
+                                    <td className="px-4 py-2">{data.booking_status}</td>
+                                    <td className="px-4 py-2">
+                                        <button className="btn btn-primary btn-sm">Pay</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
-
-        <h1 className="text-2xl font-semibold mb-6">All Bookings</h1>
-
-        <div className="flex items-center space-x-4 mb-6 flex-wrap space-y-2">
-            <button className="bg-gray-800 px-4 py-2 rounded">Year: All</button>
-            <button className="bg-gray-800 px-4 py-2 rounded">Payements : All</button>
-            <button className="bg-gray-800 px-4 py-2 rounded">Status : All</button>
-            <button className="bg-gray-800 px-4 py-2 rounded ml-auto">Send Feedback</button>
-        </div>
-
-        <div className="overflow-x-auto">
-        <table className="min-w-full table-auto">
-    <thead>
-        <tr className="bg-gray-800">
-            <th className="px-4 py-2 text-left">Vehicle</th>
-            <th className="px-4 py-2 text-left">Payments</th>
-            <th className="px-4 py-2 text-left">Client Name</th>
-            <th className="px-4 py-2 text-left">Email</th>
-            <th className="px-4 py-2 text-left">Booking Date</th>
-            <th className="px-4 py-2 text-left">Return Date</th>
-            <th className="px-4 py-2 text-left">Return Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr className="bg-gray-700">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/9b/ca/bd/9bcabd4b5f80daec640d1bbb52c4c0ed.jpg" alt="Ralph Edwards" className="w-14 h-10 rounded-sm" />
-                <span>Mercedes v9</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">3/04/2023</td>
-            <td className="px-4 py-2">15/08/2023</td>
-            <td className="px-4 py-2">Completed</td>
-        </tr>
-
-        <tr className="bg-gray-600">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/9a/0a/9a/9a0a9a2a34f6f9545f15365570f65b91.jpg" alt="Courtney Henry" className="w-14 h-10 rounded-sm" />
-                <span>Tesla Electric</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">10/06/2023</td>
-            <td className="px-4 py-2">23/09/2023</td>
-            <td className="px-4 py-2">Completed</td>
-        </tr>
-
-        <tr className="bg-gray-700">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/00/a6/29/00a629bb76fc574802fe4ff007e8787b.jpg" alt="Alex Johnson" className="w-14 h-10 rounded-sm" />
-                <span>Audi v2W</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">10/06/2023</td>
-            <td className="px-4 py-2">23/09/2023</td>
-            <td className="px-4 py-2">Completed</td>
-        </tr>
-
-        <tr className="bg-gray-700">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/00/a6/29/00a629bb76fc574802fe4ff007e8787b.jpg" alt="Alex Johnson" className="w-14 h-10 rounded-sm" />
-                <span>Audi v2W</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">10/06/2023</td>
-            <td className="px-4 py-2">23/09/2023</td>
-            <td className="px-4 py-2">Completed</td>
-        </tr>
-
-        <tr className="bg-gray-700">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/00/a6/29/00a629bb76fc574802fe4ff007e8787b.jpg" alt="Alex Johnson" className="w-14 h-10 rounded-sm" />
-                <span>Audi v2W</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">10/06/2023</td>
-            <td className="px-4 py-2">23/09/2023</td>
-            <td className="px-4 py-2">Completed</td>
-        </tr>
- <tr className="bg-gray-700">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/00/a6/29/00a629bb76fc574802fe4ff007e8787b.jpg" alt="Alex Johnson" className="w-14 h-10 rounded-sm" />
-                <span>Audi v2W</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">10/06/2023</td>
-            <td className="px-4 py-2">23/09/2023</td>
-            <td className="px-4 py-2">Completed</td>
-        </tr>
-
-        <tr className="bg-gray-700">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/00/a6/29/00a629bb76fc574802fe4ff007e8787b.jpg" alt="Alex Johnson" className="w-14 h-10 rounded-sm" />
-                <span>Audi v2W</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">10/06/2023</td>
-            <td className="px-4 py-2">23/09/2023</td>
-            <td className="px-4 py-2">Completed</td>
-        </tr>
-
-        <tr className="bg-gray-700">
-            <td className="px-4 py-2 flex items-center space-x-2">
-                <img src="https://i.pinimg.com/564x/c4/a7/8a/c4a78a5fea34f9c802f9721efc9a61bb.jpg" alt="Alex Johnson" className="w-14 h-10 rounded-sm" />
-                <span>Jaguar F-Pace</span>
-            </td>
-            <td className="px-4 py-2">Completed</td>
-            <td className="px-4 py-2">Ralph Janet</td>
-            <td className="px-4 py-2">ralph@gmail.com</td>
-            <td className="px-4 py-2">10/06/2023</td>
-            <td className="px-4 py-2">23/09/2023</td>
-            <td className="px-4 py-2">Not yet</td>
-        </tr>
-    </tbody>
-</table>
-
-  </div>
-</div>
-  )
+    );
 }
 
 export default Projects;

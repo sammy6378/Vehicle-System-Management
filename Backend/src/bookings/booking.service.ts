@@ -11,7 +11,23 @@ export const getBookings = async ( )=>{
 // get bookings by id
 export const getBooking = async ( id:number)=>{
     return await db.query.bookings.findFirst({
-    where:eq(bookings.booking_id,id)})
+    where:eq(bookings.booking_id,id),
+    with:{
+        vehicleSpec:{
+            columns:{
+                model:true,
+                image:true,
+            }
+        },
+        users:{
+            columns:{
+                email:true,
+                full_name:true,
+            }
+        }
+    }
+
+})
 }
 
 // create bookings

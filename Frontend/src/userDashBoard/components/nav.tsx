@@ -1,5 +1,5 @@
 
-import me from '../../assets/html.jpg'
+import defaultP from '../../assets/default.jpeg'
 import '../../App.scss'
 
   import { useState } from 'react';
@@ -49,7 +49,7 @@ import { TUser } from '../../services/service';
           </div>
           <div className="flex-none relative">
             <img
-              src={me}
+              src={defaultP}
               alt=""
               className="rounded-full h-10 w-10 cursor-pointer"
               onClick={toggleDropdown}

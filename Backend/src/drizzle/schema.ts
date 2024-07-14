@@ -1,21 +1,21 @@
 
-import { serial,date,varchar,integer,boolean, pgTable,pgEnum,text,timestamp } from "drizzle-orm/pg-core";
-import { One, relations,sql } from "drizzle-orm";
-import { TypeOf } from "zod";
+import { serial,date,varchar,integer,boolean, pgTable,pgEnum,text,timestamp,decimal} from "drizzle-orm/pg-core";
+import { relations,sql } from "drizzle-orm";
+
+
 
 // authentication tables
-export const authenticationTable = pgEnum("role", ['admin','user']);
+export const roleEnum = pgEnum("role", ['admin','user']);
 
 // users Table
 export const users = pgTable('users', {
   user_id: serial('user_id').notNull().primaryKey(),
+  user_name:varchar('user_name'),
+  email: varchar('email'),
   full_name: varchar('full_name').notNull(),
-  email: varchar('email').notNull().unique(),
-  user_name: varchar('username').notNull(),
-  password: varchar('password').notNull(),
   contact_phone: varchar('contact_phone').notNull(),
   address: text('address').notNull(),
-  role: authenticationTable("role").default("user"),
+  role: roleEnum("role").default("user"),
   created_at: timestamp('created_at').default(sql`NOW()`).notNull(),
   updated_at: timestamp('update_at').default(sql`NOW()`).notNull()
 });
@@ -38,7 +38,6 @@ export const profile = pgTable('profile', {
 export const authentication = pgTable('authentication', {
   auth_id: serial('auth_id').notNull().primaryKey(),
   user_id: integer('user_id').notNull().references(() => users.user_id, {onDelete:"cascade"}),
-  user_name: varchar('username').notNull(),
   password: varchar('password').notNull(),
   created_at: timestamp('created_at').default(sql`NOW()`).notNull(),
   updated_at: timestamp('update_at').default(sql`NOW()`).notNull()
@@ -70,7 +69,7 @@ export const vehicleSpecifications = pgTable('vehicle_specifications',{
   export const vehicle = pgTable('vehicle', {
     vehicle_id: serial('vehicle_id').primaryKey().notNull(),
     vehiclespec_id: integer('vehiclespec_id').notNull().references(() => vehicleSpecifications.vehiclespec_id,{onDelete:"cascade"}),
-    rental_rate: integer('rental_rate').notNull(),
+    rental_rate: decimal('rental_rate').notNull(),
     availability: boolean('availability').notNull(),
     created_at: timestamp('created_at').default(sql`NOW()`).notNull(),
     updated_at: timestamp('update_at').default(sql`NOW()`).notNull()
@@ -87,7 +86,8 @@ export const bookings = pgTable('bookings', {
     location_id: integer('location_id').notNull().references(() => locations.location_id,{onDelete:"cascade"}),
     booking_date: date('booking_date').notNull(),
     return_date: date('return_date').notNull(),
-    total_amount: integer('total_amount').notNull(),
+    total_amount: decimal('total_amount').notNull(),
+    booking_period: varchar('booking_period').notNull(),
     booking_status: bookingStatus('booking_status').default('Pending').notNull(),
     created_at: timestamp('created_at').default(sql`NOW()`).notNull(),
     updated_at: timestamp('update_at').default(sql`NOW()`).notNull()
@@ -151,7 +151,6 @@ export const customerSupportTickets = pgTable('customer_support_tickets', {
 
 export const userRelations = relations(users,({one,many})=>({
   auth:one(authentication,{fields:[users.user_id],references:[authentication.user_id]}),
-  booking: one(bookings,{fields:[users.user_id],references:[bookings.user_id]}),
   profile: one(profile,{fields:[users.user_id],references:[profile.user_id]}),
   ticket: one(customerSupportTickets,{fields:[users.user_id],references:[customerSupportTickets.user_id]}),
   bookings:many(bookings),
@@ -165,6 +164,7 @@ export const profileRelations = relations(profile,({one})=>({
 }));
 // bookings relations
 export const bookingRelations = relations(bookings,({one,many})=>({
+  users: one(users,{fields:[bookings.booking_id],references:[users.user_id]}),
   vehicleSpec: one(vehicleSpecifications,{fields:[bookings.vehiclespec_id],references:[vehicleSpecifications.vehiclespec_id]}),
   location: one(locations,{fields:[bookings.location_id],references:[locations.location_id]}),
   payment:one(payments,{fields:[bookings.booking_id],references:[payments.booking_id]}),
@@ -179,6 +179,12 @@ export const vehicleSpecificationsRelations = relations(vehicleSpecifications,({
   fleetManagement: one(fleetManagement,{fields:[vehicleSpecifications.vehiclespec_id],references:[fleetManagement.vehiclespec_id]}),
   vehicles:many(vehicle),
   fleetManagements: many(fleetManagement)
+}));
+
+
+// Vehicle relations
+export const vehicleRelations = relations(vehicle, ({ one}) => ({
+  vehicleSpec: one(vehicleSpecifications, { fields: [vehicle.vehiclespec_id], references: [vehicleSpecifications.vehiclespec_id] })
 }));
 
 

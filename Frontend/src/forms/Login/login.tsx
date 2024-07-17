@@ -25,8 +25,19 @@ function Login() {
         try {
             const response = await userLogin(data).unwrap();
             const { token, user_id, user_name, role } = response;
-            dispatch(login({ token, user_id, user_name, role }));
-            navigate('/dashboard');
+            if (role && typeof role === 'string') {
+                dispatch(login({ token, user_id, user_name, role }));
+                
+                if (role.includes('admin')) {
+                    navigate('/admin-dashboard');
+                } else if (role.includes('user')) {
+                    navigate('/dashboard');
+                } else {
+                    setErrorMessage("You do not have the required privileges.");
+                }
+            } else {
+                setErrorMessage("Invalid role.");
+            }
         } catch (error) {
             console.error("Failed to login:", error);
             setErrorMessage("Invalid email or password. Please try again.");

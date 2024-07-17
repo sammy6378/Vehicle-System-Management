@@ -6,6 +6,8 @@ import { authService } from "../services/service";
 import authSlice from "../forms/Auth/Authslice";
 import { createTransform } from 'redux-persist';
 import { paymentsAPI } from "../userDashBoard/pages/payments/paymentApi";
+import { adminservices } from "../AdminDashboard/service";
+import { VehcileSpecApi } from "../Slices/VehiclespecApi";
 
 
 const tokenTransform = createTransform(
@@ -30,12 +32,14 @@ export const store = configureStore({
     reducer: {
         [authService.reducerPath]: authService.reducer,
         auth: persistedReducer,
-        [paymentsAPI.reducerPath]: paymentsAPI.reducer
+        [paymentsAPI.reducerPath]: paymentsAPI.reducer,
+        [adminservices.reducerPath]: adminservices.reducer,
+        [VehcileSpecApi.reducerPath]: VehcileSpecApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false,
-        }).concat(authService.middleware).concat(paymentsAPI.middleware),
+        }).concat(authService.middleware).concat(paymentsAPI.middleware).concat(adminservices.middleware).concat(VehcileSpecApi.middleware)
 });
 
 export const persistor = persistStore(store);

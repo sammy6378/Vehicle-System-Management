@@ -27,6 +27,14 @@ import VehicleDetail from ".././src/userDashBoard/pages/vehicleDetail";
 import Payment from './userDashBoard/pages/payments/payment.tsx'
 import Success from './userDashBoard/pages/payments/success.tsx'
 import Cancel from './userDashBoard/pages/payments/cancel.tsx'
+import LayoutAdmin from './AdminDashboard/components/LayoutAdmin.tsx'
+import Dashboard from './AdminDashboard/pages/AdminDash.tsx'
+import VehicleManagement from './AdminDashboard/pages/ManageVehicles.tsx'
+import Errors from './AdminDashboard/pages/Errors.tsx'
+import UserManagement from './AdminDashboard/pages/ManageUsers.tsx'
+import Branches from './AdminDashboard/pages/Branches.tsx'
+import Reports from './AdminDashboard/pages/Reports.tsx'
+import Edit from './AdminDashboard/pages/EditData.tsx'
 
 const router = createBrowserRouter([
   {
@@ -119,7 +127,32 @@ const router = createBrowserRouter([
     path: '/settings',
     element:  <Layout><SettingsPage /></Layout>,
     errorElement: <Error />,
-  }
+  },
+  {
+  path: '/admin-dashboard',
+  element:  <ProtectedRoute><LayoutAdmin><Dashboard /></LayoutAdmin></ProtectedRoute>,
+  errorElement: <Errors />,
+  },
+  {
+  path: '/vehicle-management',
+  element:  <LayoutAdmin><VehicleManagement /></LayoutAdmin>,
+  },
+  {
+    path: '/user-management',
+    element:  <LayoutAdmin><UserManagement /></LayoutAdmin>,
+    },
+  {
+    path: '/branch-management',
+    element:  <LayoutAdmin><Branches /></LayoutAdmin>,
+    },
+    {
+      path: '/reports',
+      element:  <LayoutAdmin><Reports /></LayoutAdmin>,
+      },
+      {
+        path: '/vehicle/:id/edit-vehicle',
+        element:  <LayoutAdmin><Edit /></LayoutAdmin>,
+        }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

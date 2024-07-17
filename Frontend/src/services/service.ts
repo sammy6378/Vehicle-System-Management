@@ -21,6 +21,7 @@ export type TUser ={
     password: string;
     contact_phone: string;
     address: string;
+    role:string;
     created_at: string;
     updated_at: string;
 }
@@ -92,77 +93,77 @@ export type TVehicle ={
 
 // register service
 export const authService =createApi({
-    reducerPath: 'authApi',
-    baseQuery:fetchBaseQuery({baseUrl:'http://localhost:8000'}),
-    endpoints: (builder) => ({
-        getUsers: builder.query<TUser[],void>({
-            query: () => 'users',
-        }),
+reducerPath: 'authApi',
+baseQuery:fetchBaseQuery({baseUrl:'http://localhost:8000'}),
+endpoints: (builder) => ({
+getUsers: builder.query<TUser[],void>({
+    query: () => 'users',
+}),
 
-        authUser: builder.mutation<TAuthResponse,Partial<TAuth>>({
-            query: (newUser) => ({
-                url: 'login',
-                method: 'POST',
-                body: newUser
-            })
-        }),
+authUser: builder.mutation<TAuthResponse,Partial<TAuth>>({
+    query: (newUser) => ({
+        url: 'login',
+        method: 'POST',
+        body: newUser
+    })
+}),
 
-        registerUser: builder.mutation<TRegister[],Partial<TRegister>>({
-            query: (newUser) => ({
-                url: 'register',
-                method: 'POST',
-                body: newUser
-            })
-        }),
+registerUser: builder.mutation<TRegister[],Partial<TRegister>>({
+    query: (newUser) => ({
+        url: 'register',
+        method: 'POST',
+        body: newUser
+    })
+}),
 
-        getVehicleSpec:builder.query<TVehicleSpec[],void>({
-            query: () => 'vehiclespecs',
-    }),
-    profileUser:builder.query<tProfile,void>({
-        query: (id) => `profile/${id}`,
-    }),
-    createProfile:builder.mutation<tProfile[],Partial<tProfile>>({
-        query: (newProfile) => ({
-            url: 'profile',
-            method: 'POST',
-            body: newProfile
-        })
-    }),
-    getLocation:builder.query<Tlocation[],void>({
-        query: () => 'locations',
-    }),
-    createBooking:builder.mutation<TBooking[],Partial<TBooking>>({
-        query: (newBooking) => ({
-            url: 'booking',
-            method: 'POST',
-            body: newBooking
-        })
-    }),
-    createPayment:builder.mutation<TBooking[],Partial<TBooking>>({
-        query: (newPayment) => ({
-            url: 'checkout-session',
-            method: 'POST',
-            body: newPayment
-        })
-    }),
-    getBookings:builder.query<TBooking[],void>({
-        query: () => 'bookings',
-    }),
-    getVehicles:builder.query<TVehicle[],void>({
-        query:() => 'vehicles'
-    }),
-    
+getVehicleSpec:builder.query<TVehicleSpec[],void>({
+    query: () => 'vehiclespecs',
+}),
+profileUser:builder.query<tProfile,void>({
+query: (id) => `profile/${id}`,
+}),
+createProfile:builder.mutation<tProfile[],Partial<tProfile>>({
+query: (newProfile) => ({
+    url: 'profile',
+    method: 'POST',
+    body: newProfile
+})
+}),
+getLocation:builder.query<Tlocation[],void>({
+query: () => 'locations',
+}),
+createBooking:builder.mutation<TBooking[],Partial<TBooking>>({
+query: (newBooking) => ({
+    url: 'booking',
+    method: 'POST',
+    body: newBooking
+})
+}),
+createPayment:builder.mutation<TBooking[],Partial<TBooking>>({
+query: (newPayment) => ({
+    url: 'checkout-session',
+    method: 'POST',
+    body: newPayment
+})
+}),
+getBookings:builder.query<TBooking[],void>({
+query: () => 'bookings',
+}),
+getVehicles:builder.query<TVehicle[],void>({
+query:() => 'vehicles'
+}),
+
 }) 
 })
 
 
 
 export const { 
-    useGetUsersQuery,
-    useAuthUserMutation,
-    useRegisterUserMutation, 
-    useGetVehicleSpecQuery,
-    useCreateProfileMutation,
-    useGetLocationQuery,
-    useCreateBookingMutation,
- } = authService;
+useGetUsersQuery,
+useAuthUserMutation,
+useRegisterUserMutation, 
+useGetVehicleSpecQuery,
+useCreateProfileMutation,
+useGetLocationQuery,
+useCreateBookingMutation,
+} = authService;

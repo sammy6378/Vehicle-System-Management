@@ -1,12 +1,15 @@
 import { authService, TUser, TVehicleSpec } from "../../services/service";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/Store";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { paymentsAPI } from "./payments/paymentApi";
+import { loadStripe } from '@stripe/stripe-js';
 
 function Projects() {
     const { data: bookingData } = authService.useGetBookingsQuery();
     const { data: userData } = authService.useGetUsersQuery();
     const { data: vehicleData } = authService.useGetVehicleSpecQuery();
+    const [createPayment] = paymentsAPI.useCreatePaymentMutation();
 
     const authState = useSelector((state: RootState) => state.auth);
     const user = authState.user as TUser | null;
@@ -14,21 +17,52 @@ function Projects() {
 
     const combineData = () => {
         if (!bookingData || !userData || !vehicleData) return [];
-        const loggedInUser = userData.find((u: TUser) => u.user_id === user_id);
-
-        return bookingData.map((data) => {
-            const vehicle = vehicleData.find((v: TVehicleSpec) => v.vehiclespec_id === data.vehiclespec_id);
-            return {
-                ...data,
-                clientName: loggedInUser ? `${loggedInUser.full_name}` : '',
-                email: loggedInUser ? `${loggedInUser.email}` : '',
-                vehicleImage: vehicle ? vehicle.image : '',
-                vehicleModel: vehicle ? vehicle.model : '',
-            };
-        });
+        
+        return bookingData
+            .filter((data) => data.user_id === user_id)
+            .map((data) => {
+                const bookingUser = userData.find((u: TUser) => u.user_id === data.user_id);
+                const vehicle = vehicleData.find((v: TVehicleSpec) => v.vehiclespec_id === data.vehiclespec_id);
+                return {
+                    ...data,
+                    clientName: bookingUser ? `${bookingUser.full_name}` : '',
+                    email: bookingUser ? `${bookingUser.email}` : '',
+                    vehicleImage: vehicle ? vehicle.image : '',
+                    vehicleModel: vehicle ? vehicle.model : '',
+                };
+            });
     };
 
     const combinedData = combineData();
+
+    const { id } = useParams();
+    const vehicle = vehicleData?.find(v => v.vehiclespec_id === Number(id));
+    
+    const makePayment = async (data: { clientName?: string; email?: string; vehicleImage?: string; vehicleModel?: string; booking_id: any; user_id?: number; vehiclespec_id?: number; location_id?: number; booking_date?: string; return_date?: string; total_amount?: number; booking_period?: string; booking_status?: string; }) => {
+        if (data && vehicle) {
+            const stripePromise = loadStripe(import.meta.env.VITE_STRIPE!);
+            const stripe = await stripePromise;
+            const payment = {
+                name: vehicle.model,
+                image: vehicle.image,
+                feature: vehicle.features,
+                amount: vehicle.price,
+                bookingId: data.booking_id
+            };
+
+            try {
+                const response = await createPayment(payment);
+                const session = response.data;
+                if (session?.payment_id) {
+                    await stripe?.redirectToCheckout({ sessionId: session.payment_id.toString() });
+                } else {
+                    console.error("Payment ID is not available");
+                }
+            } catch (error) {
+                console.error("Error creating payment:", error);
+            }
+        }
+    };
 
     return (
         <div className="p-4">
@@ -37,7 +71,7 @@ function Projects() {
                 <span>All Bookings</span>
             </div>
 
-            <h1 className="text-2xl font-semibold mb-6">All Bookings</h1>
+            <h1 className="text-2xl font-semibold mb-6 text-slate-100">All Bookings</h1>
 
             {combinedData.length === 0 ? (
                 <div className="text-gray-400">You have not made any booking yet.</div>
@@ -45,9 +79,8 @@ function Projects() {
                 <div className="overflow-x-auto">
                     <table className="min-w-full table-auto">
                         <thead>
-                            <tr className="bg-gray-800">
+                            <tr className="bg-gray-800 text-slate-100 text-nowrap">
                                 <th className="px-4 py-2 text-left">Vehicle</th>
-                                <th className="px-4 py-2 text-left">Client Name</th>
                                 <th className="px-4 py-2 text-left">Email</th>
                                 <th className="px-4 py-2 text-left">Booking Period</th>
                                 <th className="px-4 py-2 text-left">Booking Date</th>
@@ -58,19 +91,18 @@ function Projects() {
                         </thead>
                         <tbody>
                             {combinedData.map((data) => (
-                                <tr key={data.booking_id} className="bg-gray-700">
+                                <tr key={data.booking_id} className="bg-gray-700 text-slate-200">
                                     <td className="px-4 py-2 flex items-center space-x-2">
                                         <img src={data.vehicleImage} alt="Vehicle" className="w-14 h-10 rounded-sm" />
                                         <span>{data.vehicleModel}</span>
                                     </td>
-                                    <td className="px-4 py-2">{data.clientName}</td>
                                     <td className="px-4 py-2">{data.email}</td>
                                     <td className="px-4 py-2">{data.booking_period}</td>
                                     <td className="px-4 py-2">{data.booking_date}</td>
                                     <td className="px-4 py-2">{data.return_date}</td>
                                     <td className="px-4 py-2">{data.booking_status}</td>
                                     <td className="px-4 py-2">
-                                        <button className="btn btn-primary btn-sm">Pay</button>
+                                        <button onClick={() => makePayment(data)} className="btn btn-primary btn-sm">Pay</button>
                                     </td>
                                 </tr>
                             ))}

@@ -108,7 +108,6 @@ export const payments = pgTable('payments', {
   });
   
 
-
 //   Customer Support Tickets Table
 export const customerSupportTickets = pgTable('customer_support_tickets', {
     ticket_id: serial('ticket_id').notNull().primaryKey(),

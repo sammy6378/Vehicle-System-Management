@@ -43,7 +43,7 @@ function Dash() {
     {loading ? (<div className='flex justify-center items-center h-screen'><HashLoader color="#17ed84" /></div>):(
     <div className="flex-grow p-6 bg-gray-100">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Vehicle Dashboard</h2>
-      <div className="grid grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h3 className="text-xl font-medium text-gray-900">Total Vehicles</h3>
           <p className="text-3xl font-bold text-gray-800">120</p>

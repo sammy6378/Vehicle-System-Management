@@ -2,15 +2,13 @@ import { useParams } from 'react-router-dom';
 import { Tlocation, TUser, useGetLocationQuery, useGetVehicleSpecQuery, useCreateBookingMutation } from "../../../services/service";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/Store';
-import { paymentsAPI } from './paymentApi';
-import { loadStripe } from '@stripe/stripe-js';
 import { useForm } from 'react-hook-form';
 import { authService } from '../../../services/service';
 import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-type formData = {
+export type formData = {
   user_id: number,
   vehiclespec_id: number;
   location_id: number;
@@ -32,7 +30,6 @@ function Payment() {
   const vehicle = VehicleSpec?.find(v => v.vehiclespec_id === Number(id));
   const vehicleDetails = vehicles?.find(v => v.vehiclespec_id === Number(id));
 
-  const [paymentData] = paymentsAPI.useCreatePaymentMutation();
   const [bookingData] = useCreateBookingMutation();
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<formData>();
 
@@ -95,30 +92,6 @@ function Payment() {
     }
   };
 
-  const makePayment = async (data: formData) => {
-    const res = await bookingData(data);
-
-    if (paymentData) {
-      const stripePromise = loadStripe(import.meta.env.VITE_STRIPE!);
-      const stripe = await stripePromise;
-      const [{ booking_id }] = res.data || [];
-      const payment = {
-        name: vehicle?.model,
-        image: vehicle?.image,
-        feature: vehicle?.features,
-        amount: calculatedPrice,
-        bookingId: booking_id
-      }
-
-      const response = await paymentData(payment)
-      const session = response.data
-      if (session?.payment_id) {
-        await stripe?.redirectToCheckout({ sessionId: session.payment_id.toString() });
-      } else {
-        console.error("Payment ID is not available");
-      }
-    }
-  }
 
   return (
     <div className='bg-slate-50 p-4'>

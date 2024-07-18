@@ -22,7 +22,7 @@ const UserManagement = () => {
         </thead>
         <tbody>
           {getUsers?.map(user => (
-            <tr key={user.user_id}>
+            <tr key={user.user_id} className="text-slate-300">
               <td className="py-2 px-4 border-b">{user.user_id}</td>
               <td className="py-2 px-4 border-b">{user.full_name}</td>
               <td className="py-2 px-4 border-b text-ellipsis overflow-hidden whitespace-nowrap">{user.email}</td>

@@ -21,8 +21,6 @@ import Register from './forms/register.tsx'
 import {  store} from './store/Store.tsx'
 import { Provider } from 'react-redux'
 import ProtectedRoute from './forms/Auth/ProtectedRoute.tsx'
-// import { PersistGate } from 'redux-persist/integration/react'
-import ComingSoonPage from './userDashBoard/pages/comingSoon.tsx'
 import VehicleDetail from ".././src/userDashBoard/pages/vehicleDetail";
 import Payment from './userDashBoard/pages/payments/payment.tsx'
 import Success from './userDashBoard/pages/payments/success.tsx'
@@ -35,6 +33,8 @@ import UserManagement from './AdminDashboard/pages/ManageUsers.tsx'
 import Branches from './AdminDashboard/pages/Branches.tsx'
 import Reports from './AdminDashboard/pages/Reports.tsx'
 import Edit from './AdminDashboard/pages/EditData.tsx'
+import CreateTicketForm from './userDashBoard/pages/CreateTicket.tsx'
+import NotificationPage from './userDashBoard/pages/Notifications.tsx'
 
 const router = createBrowserRouter([
   {
@@ -114,7 +114,12 @@ const router = createBrowserRouter([
   },
   {
     path: '/notifications',
-    element:  <Layout><ComingSoonPage/></Layout>,
+    element:  <Layout><NotificationPage/></Layout>,
+    errorElement: <Error />,
+  },
+  {
+    path: '/support-tickets',
+    element:  <Layout><CreateTicketForm/></Layout>,
     errorElement: <Error />,
   },
 

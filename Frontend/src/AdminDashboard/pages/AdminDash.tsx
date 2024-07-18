@@ -36,7 +36,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 flex flex-col space-y-4">
-      <div className="text-2xl font-bold mb-3">Dashboard Overview</div>
+      <div className="text-2xl font-bold mb-3 text-white">Dashboard Overview</div>
       <div className="grid grid-cols-3 gap-6 mb-6">
         <div className="bg-white p-4 rounded-lg shadow-lg">
           <h3 className="text-xl font-medium text-gray-900">Total Vehicles</h3>

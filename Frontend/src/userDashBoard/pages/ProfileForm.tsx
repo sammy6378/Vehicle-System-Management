@@ -105,7 +105,7 @@ const ProfileForm = () => {
     <div className="w-full mx-auto p-10 bg-slate-200">
       <ToastContainer />
       <h2 className="text-2xl font-bold mb-6">Profile Information</h2>
-      <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="name">Name</label>
           <input type="text" name="name" value={profile.name} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" disabled />
@@ -130,35 +130,37 @@ const ProfileForm = () => {
           <label className="block text-gray-700 font-bold mb-2" htmlFor="address">Address</label>
           <input type="text" name="address" value={profile.address} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" disabled />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 col-span-1 md:col-span-2">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="image">Upload Image</label>
           <input type="file" name="image" onChange={handleImageChange} className="w-full px-3 py-2 border rounded-lg bg-white" />
           {profile.image && <img src={URL.createObjectURL(profile.image)} alt="Profile" className="mt-4 rounded-full h-32 w-32 object-cover" />}
         </div>
-        <div className="flex flex-col">
-          <h1>Social</h1>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="facebook">Facebook</label>
-            <input type="text" name="facebook" value={profile.facebook} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="instagram">Instagram</label>
-            <input type="text" name="instagram" value={profile.instagram} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="twitter">Twitter</label>
-            <input type="text" name="twitter" value={profile.twitter} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
+        <div className="mb-4 col-span-1 md:col-span-2">
+          <h1 className="font-bold mb-2">Social</h1>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="facebook">Facebook</label>
+              <input type="text" name="facebook" value={profile.facebook} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="instagram">Instagram</label>
+              <input type="text" name="instagram" value={profile.instagram} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="twitter">Twitter</label>
+              <input type="text" name="twitter" value={profile.twitter} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
+            </div>
           </div>
         </div>
-        <div className="flex flex-col">
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="location">Location (Google Map Embed URL)</label>
-            <input type="text" name="location" value={profile.location} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="map">Google Map</label>
-            <iframe src={profile.location} width="100%" height="300" className="border rounded-lg bg-white" allowFullScreen loading="lazy"></iframe>
-          </div>
+        <div className="mb-4 col-span-1 md:col-span-2">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="location">Location (Google Map Embed URL)</label>
+          <input type="text" name="location" value={profile.location} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
+        </div>
+        <div className="mb-4 col-span-1 md:col-span-2">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="map">Google Map</label>
+          <iframe src={profile.location} width="100%" height="300" className="border rounded-lg bg-white" allowFullScreen loading="lazy"></iframe>
+        </div>
+        <div className="col-span-1 md:col-span-2">
           <button type="submit" className="w-full bg-blue-500 text-white px-3 py-2 rounded-lg">Save Profile</button>
         </div>
       </form>

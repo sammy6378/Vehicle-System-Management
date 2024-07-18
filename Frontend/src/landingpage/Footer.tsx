@@ -2,7 +2,7 @@
 
 function Footer() {
   return (
-    <footer id="contact" className="bg-base-300 text-white py-12">
+    <footer id="contact" className="bg-slate-900 text-white py-12">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold">Lexus CarRent</h1>

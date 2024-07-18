@@ -19,7 +19,7 @@ const Branches = () => {
         </thead>
         <tbody>
           {getBranches?.map(branch => (
-            <tr key={branch.location_id}>
+            <tr key={branch.location_id} className="text-slate-300">
               <td className="py-2 px-4 border-b">{branch.location_id}</td>
               <td className="py-2 px-4 border-b">{branch.name}</td>
               <td className="py-2 px-4 border-b text-ellipsis overflow-hidden whitespace-nowrap">{branch.address}</td>

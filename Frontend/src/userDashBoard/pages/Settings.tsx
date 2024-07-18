@@ -8,7 +8,7 @@ const settingsNav = [
   { name: 'Billing Information', icon: CreditCard, section: 'billing' },
   { name: 'Social Networks', icon: Users, section: 'social' },
   { name: 'Change Password', icon: Lock, section: 'password' },
-  { name: 'Notifications', icon: Bell, section: 'notifications' },
+  { name: 'Delete Account', icon: Bell, section: 'Delete' },
 ];
 
 export default function SettingsPage() {
@@ -38,7 +38,7 @@ export default function SettingsPage() {
         {activeSection === 'billing' && <BillingInformation />}
         {activeSection === 'social' && <SocialNetworks />}
         {activeSection === 'password' && <ChangePassword />}
-        {activeSection === 'notifications' && <Notifications />}
+        {activeSection === 'Delete' && <Notifications />}
       </div>
     </div>
   );
@@ -141,9 +141,25 @@ function ChangePassword() {
 function Notifications() {
   return (
     <div>
-      <h2 className="text-lg font-medium text-gray-900 mb-4">Notifications</h2>
-      <p>Here you can manage your notifications.</p>
-      {/* Add form fields for notifications */}
+      <h2 className="text-lg font-medium text-gray-900 mb-4">Delete Account</h2>
+      <div className="min-h-screen pt-6 flex items-start justify-center">
+      <div className="flex flex-col space-y-4 min-w-screen h-screen animated fadeIn faster">
+  <div className="flex flex-col p-8 bg-red-200 shadow-md hover:shodow-lg rounded">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 rounded p-3 border border-red-800 text-gray-100 bg-red-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div className="flex flex-col ml-3">
+          <div className="font-medium leading-none text-red-500">Delete Your Acccount ?</div>
+          <p className="text-sm text-gray-500 leading-none mt-1">By deleting your account you will lose your all data </p>
+        </div>
+      </div>
+      <button className="flex-no-shrink bg-red-500 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-red-500 text-white rounded">Delete</button>
+    </div>
+  </div>
+</div>
+</div>
     </div>
   );
 }

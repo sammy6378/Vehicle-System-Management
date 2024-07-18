@@ -9,8 +9,8 @@ const VehicleManagement = () => {
 
   return (
     <div className="p-6 overflow-x-auto">
-      <table className="min-w-full table-auto border">
-        <thead className="bg-base-300">
+      <table className="min-w-full table-auto border border-slate-700">
+        <thead className="bg-base-100">
           <tr>
             <th className="py-2 px-4 border-b">Manufacturer</th>
             <th className="py-2 px-4 border-b">Model</th>
@@ -25,7 +25,7 @@ const VehicleManagement = () => {
         </thead>
         <tbody>
           {getVehicles?.map(vehicle => (
-            <tr key={vehicle.vehiclespec_id}>
+            <tr key={vehicle.vehiclespec_id} className="text-slate-300">
               <td className="py-2 px-4 border-b">{vehicle.manufacturer}</td>
               <td className="py-2 px-4 border-b">{vehicle.model}</td>
               <td className="py-2 px-4 border-b">{vehicle.price}</td>

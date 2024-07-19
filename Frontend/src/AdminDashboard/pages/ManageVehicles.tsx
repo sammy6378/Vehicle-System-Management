@@ -1,11 +1,12 @@
 
 
+import { PulseLoader } from "react-spinners";
 import { VehcileSpecApi } from "../../Slices/VehiclespecApi";
 import { Link} from "react-router-dom";
 
 const VehicleManagement = () => {
 
-  const {data:getVehicles} = VehcileSpecApi.useGetVehicleSpecQuery();
+  const {data:getVehicles,isLoading} = VehcileSpecApi.useGetVehicleSpecQuery();
 
   return (
     <div className="p-6 overflow-x-auto">
@@ -23,6 +24,7 @@ const VehicleManagement = () => {
             <th className="py-2 px-4 border-b">Delete</th>
           </tr>
         </thead>
+        {isLoading?(<div className="flex justify-center py-2"><PulseLoader color="#19f519" /></div>):(
         <tbody>
           {getVehicles?.map(vehicle => (
             <tr key={vehicle.vehiclespec_id} className="text-slate-300">
@@ -42,9 +44,12 @@ const VehicleManagement = () => {
             </tr>
           ))}
         </tbody>
+        )}
       </table>
     </div>
   );
 }
 
 export default VehicleManagement;
+
+

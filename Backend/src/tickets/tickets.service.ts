@@ -13,7 +13,15 @@ export const getTickets = async ( )=>{
 // get ticket by id
 export const getTicket = async ( id:number)=>{
     return await db.query.customerSupportTickets.findFirst({
-    where:eq(customerSupportTickets.ticket_id,id)})
+    where:eq(customerSupportTickets.ticket_id,id),
+    with:{
+        user:{
+            columns:{
+                email:true
+            }
+        }
+    }
+})
 }
 
 // create ticket record

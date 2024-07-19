@@ -65,6 +65,7 @@ export const authLoginService = async (email: string) => {
             contact_phone: user.contact_phone,
             address: user.address,
             role: user.role,
+            status:user.status,
             created_at: user.created_at,
             updated_at: user.updated_at,
             password: auth.password // password for verification

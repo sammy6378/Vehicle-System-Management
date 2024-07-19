@@ -10,7 +10,8 @@ export interface TAuthResponse {
     user: TUser;
     user_id:number,
     user_name:string,
-    role:string
+    role:string,
+    status:string
 }
 
 export type TUser ={
@@ -22,6 +23,7 @@ export type TUser ={
     contact_phone: string;
     address: string;
     role:string;
+    status:string;
     created_at: string;
     updated_at: string;
 }
@@ -91,6 +93,21 @@ export type TVehicle ={
     rental_rate: number;
 }
 
+export type TTickects={
+    user_id:number;
+    subject:string;
+    description:string;
+}
+
+export type  TFleet ={
+    fleet_id:number;
+    vehiclespec_id:number;
+    acquisition_date:string;
+    depreciation_rate:string;
+    current_value: string;
+    maintenance_cost: string;
+    status: string;
+}
 // register service
 export const authService =createApi({
 reducerPath: 'authApi',
@@ -151,6 +168,19 @@ query: () => 'bookings',
 }),
 getVehicles:builder.query<TVehicle[],void>({
 query:() => 'vehicles'
+}),
+createTicket:builder.mutation<TTickects[],Partial<TTickects>>({
+    query: (newTicket) => ({
+        url:"ticket",
+        method: "POST",
+        body: newTicket,
+    })
+}),
+getTickets:builder.query<TTickects[],void>({
+    query: () => 'tickets',
+}),
+getFleets:builder.query<TFleet[],void>({
+    query: () => 'fleets',
 }),
 
 }) 

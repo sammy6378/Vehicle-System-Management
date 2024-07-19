@@ -24,10 +24,13 @@ function Login() {
         setLoading(true);
         try {
             const response = await userLogin(data).unwrap();
-            const { token, user_id, user_name, role } = response;
-            if (role && typeof role === 'string') {
+            const { token, user_id, user_name, role,status } = response;
+         
+            if (status === 'disabled') {
+                setErrorMessage('Your account is disabled. Please contact support.');
+            } else if (role && typeof role === 'string') {
                 dispatch(login({ token, user_id, user_name, role }));
-                
+    
                 if (role.includes('admin')) {
                     navigate('/admin-dashboard');
                 } else if (role.includes('user')) {
@@ -44,8 +47,7 @@ function Login() {
         } finally {
             setLoading(false);
         }
-    }
-
+    };
     return (
         <>
             <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-40">

@@ -82,5 +82,10 @@ Content-Type: application/json
 }
 
 ###
-Get http://localhost:8000/bookings
+PUT  http://localhost:8000/user-status/5
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJ1c2VyX25hbWUiOiJTYW1teSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTcyMTMxODg5M30.89wo0PFhE0ggbSsadfUOk9mUr9y2yuSts2UK00Mn7ss
+
+{
+  "status": "disabled"
+}
 

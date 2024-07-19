@@ -54,7 +54,7 @@ const Edit = () => {
   return (
     <>
     <ToastContainer />
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-slate-200 p-6 m-6 rounded-lg shadow-md sm:m-1">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-slate-200 p-6 m-6 rounded-lg shadow-md sm:m-6">
   <Link to="/vehicle-management" className="text-white px-2 py-1 bg-blue-500 rounded-sm">
     Back
   </Link>

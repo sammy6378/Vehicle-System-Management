@@ -1,6 +1,6 @@
 
 import { Link,useLocation } from 'react-router-dom';
-import { LayoutDashboard,CircleUserRound,Car,Heart,Bell,Contact,Sparkles,ReceiptText,LogOut, HelpCircle } from 'lucide-react';
+import { LayoutDashboard,CircleUserRound,Car,Heart,Contact,Sparkles,ReceiptText,LogOut, HelpCircle } from 'lucide-react';
 
 export default function NavBar(){
   const location = useLocation();

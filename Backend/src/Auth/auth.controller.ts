@@ -127,7 +127,12 @@ export const login = async (c: Context) => {
         }
 
         // Destructure necessary fields from userExists
-        const { user_id,user_name, role, password: userPassword } = userExists;
+        const { user_id,user_name, role, password: userPassword,status } = userExists;
+
+        // Check if the user is disabled
+        if (status === "disabled") {
+            return c.json({ error: "Account is disabled" }, 403);
+        }
 
         const userMatch = await bcrypt.compare(password, userPassword);
 
@@ -138,6 +143,7 @@ export const login = async (c: Context) => {
                 user_id,
                 user_name,
                 role,
+                status,
                 exp: Math.floor(Date.now() / 1000) + (60 * 180), // 3 hours expiration
             };
 
@@ -145,7 +151,7 @@ export const login = async (c: Context) => {
             const token = await sign(payload, secret);
 
             // Return only the token, role, and user_id
-            return c.json({ token, role, user_id,user_name }, 200);
+            return c.json({ token, role, user_id,user_name,status }, 200);
         }
     } catch (error: any) {
         return c.json({ error: error.message }, 400);

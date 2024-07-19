@@ -1,9 +1,10 @@
 
+import { PulseLoader } from "react-spinners";
 import { adminservices } from "../service";
 
 const Branches = () => {
 
-  const {data:getBranches} = adminservices.useGetBranchesQuery();
+  const {data:getBranches,isLoading} = adminservices.useGetBranchesQuery();
 
   return (
     <div className="p-6 overflow-x-auto">
@@ -17,6 +18,7 @@ const Branches = () => {
             <th className="py-2 px-4 border-b">Edit Branch</th>
           </tr>
         </thead>
+        {isLoading?(<div className="flex justify-center py-2"><PulseLoader color="#19f519" /></div>):(
         <tbody>
           {getBranches?.map(branch => (
             <tr key={branch.location_id} className="text-slate-300">
@@ -30,6 +32,7 @@ const Branches = () => {
             </tr>
           ))}
         </tbody>
+        )}
       </table>
       <form>
         

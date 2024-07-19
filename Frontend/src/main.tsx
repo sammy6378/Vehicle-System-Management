@@ -35,8 +35,11 @@ import Reports from './AdminDashboard/pages/Reports.tsx'
 import Edit from './AdminDashboard/pages/EditData.tsx'
 import CreateTicketForm from './userDashBoard/pages/CreateTicket.tsx'
 import NotificationPage from './userDashBoard/pages/Notifications.tsx'
+import SupportTickets from './AdminDashboard/pages/Tickets.tsx'
 
 const router = createBrowserRouter([
+
+  // landing page
   {
     path: '/',
     element: <App />,
@@ -52,6 +55,8 @@ const router = createBrowserRouter([
     element: <Login />,
     errorElement: <Error />,
   },
+
+  // user dashboard
   {
     path: '/dashboard',
     element:  <ProtectedRoute><Layout><Dash /></Layout></ProtectedRoute>,
@@ -133,31 +138,37 @@ const router = createBrowserRouter([
     element:  <Layout><SettingsPage /></Layout>,
     errorElement: <Error />,
   },
-  {
-  path: '/admin-dashboard',
-  element:  <ProtectedRoute><LayoutAdmin><Dashboard /></LayoutAdmin></ProtectedRoute>,
-  errorElement: <Errors />,
-  },
-  {
-  path: '/vehicle-management',
-  element:  <LayoutAdmin><VehicleManagement /></LayoutAdmin>,
-  },
-  {
-    path: '/user-management',
-    element:  <LayoutAdmin><UserManagement /></LayoutAdmin>,
-    },
-  {
-    path: '/branch-management',
-    element:  <LayoutAdmin><Branches /></LayoutAdmin>,
-    },
-    {
-      path: '/reports',
-      element:  <LayoutAdmin><Reports /></LayoutAdmin>,
-      },
-      {
-        path: '/vehicle/:id/edit-vehicle',
-        element:  <LayoutAdmin><Edit /></LayoutAdmin>,
-        }
+
+  // admin dashboard
+{
+path: '/admin-dashboard',
+element:  <ProtectedRoute><LayoutAdmin><Dashboard /></LayoutAdmin></ProtectedRoute>,
+errorElement: <Errors />,
+},
+{
+path: '/vehicle-management',
+element:  <LayoutAdmin><VehicleManagement /></LayoutAdmin>,
+},
+{
+path: '/user-management',
+element:  <LayoutAdmin><UserManagement /></LayoutAdmin>,
+},
+{
+path: '/branch-management',
+element:  <LayoutAdmin><Branches /></LayoutAdmin>,
+},
+{
+path: '/reports',
+element:  <LayoutAdmin><Reports /></LayoutAdmin>,
+},
+{
+path: '/vehicle/:id/edit-vehicle',
+element:  <LayoutAdmin><Edit /></LayoutAdmin>,
+},
+{
+  path: '/reply-tickets',
+  element:  <LayoutAdmin><SupportTickets /></LayoutAdmin>,
+}
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

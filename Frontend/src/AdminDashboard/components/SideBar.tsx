@@ -32,10 +32,10 @@ const Sidebar = () => {
           <span className="material-icons">location_on</span>
           <span className="ml-2">Locations & Branches</span>
         </Link>
-        <a href="#" className="text-gray-300 dark:hover:bg-gray-600 hover:text-white px-4 py-2 flex items-center">
+        <Link to="/reply-tickets" className="text-gray-300 dark:hover:bg-gray-600 hover:text-white px-4 py-2 flex items-center">
           <span className="material-icons">support</span>
           <span className="ml-2">Customer Support</span>
-        </a>
+        </Link>
         <a href="#" className="text-gray-300 dark:hover:bg-gray-600 hover:text-white px-4 py-2 flex items-center">
           <span className="material-icons">commute</span>
           <span className="ml-2">Fleet Management</span>

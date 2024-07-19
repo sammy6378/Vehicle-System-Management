@@ -2,15 +2,14 @@ import { authService, TUser, TVehicleSpec } from "../../services/service";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/Store";
 import { Link, useParams } from "react-router-dom";
-import { paymentsAPI } from "./payments/paymentApi";
 import { loadStripe } from '@stripe/stripe-js';
+
 
 function Projects() {
     const { data: bookingData } = authService.useGetBookingsQuery();
     const { data: userData } = authService.useGetUsersQuery();
     const { data: vehicleData } = authService.useGetVehicleSpecQuery();
-    const [createPayment] = paymentsAPI.useCreatePaymentMutation();
-
+    
     const authState = useSelector((state: RootState) => state.auth);
     const user = authState.user as TUser | null;
     const { user_id } = user as TUser;
@@ -21,12 +20,9 @@ function Projects() {
         return bookingData
             .filter((data) => data.user_id === user_id)
             .map((data) => {
-                const bookingUser = userData.find((u: TUser) => u.user_id === data.user_id);
                 const vehicle = vehicleData.find((v: TVehicleSpec) => v.vehiclespec_id === data.vehiclespec_id);
                 return {
                     ...data,
-                    clientName: bookingUser ? `${bookingUser.full_name}` : '',
-                    email: bookingUser ? `${bookingUser.email}` : '',
                     vehicleImage: vehicle ? vehicle.image : '',
                     vehicleModel: vehicle ? vehicle.model : '',
                 };
@@ -38,31 +34,25 @@ function Projects() {
     const { id } = useParams();
     const vehicle = vehicleData?.find(v => v.vehiclespec_id === Number(id));
     
-    const makePayment = async (data: { clientName?: string; email?: string; vehicleImage?: string; vehicleModel?: string; booking_id: any; user_id?: number; vehiclespec_id?: number; location_id?: number; booking_date?: string; return_date?: string; total_amount?: number; booking_period?: string; booking_status?: string; }) => {
-        if (data && vehicle) {
-            const stripePromise = loadStripe(import.meta.env.VITE_STRIPE!);
-            const stripe = await stripePromise;
-            const payment = {
-                name: vehicle.model,
-                image: vehicle.image,
-                feature: vehicle.features,
-                amount: vehicle.price,
-                bookingId: data.booking_id
-            };
-
+    const makePayment = async (bookingId: number, amount: number) => {
+        console.log(bookingId,amount)
             try {
-                const response = await createPayment(payment);
-                const session = response.data;
-                if (session?.payment_id) {
-                    await stripe?.redirectToCheckout({ sessionId: session.payment_id.toString() });
-                } else {
-                    console.error("Payment ID is not available");
-                }
+                const response = await fetch('https://vehicle-system-backend.onrender.com/checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({bookingId,amount})
+                });
+
+                const { checkoutUrl } = await response.json();
+              
+                window.location.href = checkoutUrl;
             } catch (error) {
-                console.error("Error creating payment:", error);
+                console.error("Error creating checkout session:", error);
             }
         }
-    };
+    
 
     return (
         <div className="p-4">
@@ -81,7 +71,8 @@ function Projects() {
                         <thead>
                             <tr className="bg-gray-800 text-slate-100 text-nowrap">
                                 <th className="px-4 py-2 text-left">Vehicle</th>
-                                <th className="px-4 py-2 text-left">Email</th>
+                                <th className="px-4 py-2 text-left">Model</th>
+                                <th className="px-4 py-2 text-left">Price</th>
                                 <th className="px-4 py-2 text-left">Booking Period</th>
                                 <th className="px-4 py-2 text-left">Booking Date</th>
                                 <th className="px-4 py-2 text-left">Return Date</th>
@@ -94,15 +85,15 @@ function Projects() {
                                 <tr key={data.booking_id} className="bg-gray-700 text-slate-200">
                                     <td className="px-4 py-2 flex items-center space-x-2">
                                         <img src={data.vehicleImage} alt="Vehicle" className="w-14 h-10 rounded-sm" />
-                                        <span>{data.vehicleModel}</span>
                                     </td>
-                                    <td className="px-4 py-2">{data.email}</td>
+                                    <td className="px-4 py-2">{data.vehicleModel}</td>
+                                    <td className="px-4 py-2">${data.total_amount}</td>
                                     <td className="px-4 py-2">{data.booking_period}</td>
                                     <td className="px-4 py-2">{data.booking_date}</td>
                                     <td className="px-4 py-2">{data.return_date}</td>
                                     <td className="px-4 py-2">{data.booking_status}</td>
                                     <td className="px-4 py-2">
-                                        <button onClick={() => makePayment(data)} className="btn btn-primary btn-sm">Pay</button>
+                                    <button onClick={() => makePayment(data.booking_id,data.total_amount)} className="btn btn-primary btn-sm">Pay</button>
                                     </td>
                                 </tr>
                             ))}

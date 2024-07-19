@@ -13,8 +13,7 @@ import { bookingRouter } from "./bookings/booking.router";
 import { authRouter } from "./Auth/auth.router";
 import { cors } from 'hono/cors'
 import { profileRoutes } from "./profile/profile.router";
-import {TIVehicle} from "./drizzle/schema";
-import stripe from "stripe";
+import { adminRouter } from "./Admin/admin.router";
 
 
 app.use('*', cors())
@@ -32,7 +31,7 @@ app.route('/',fleetRouter)
 app.route('/',bookingRouter)
 app.route('/',authRouter)
 app.route('/',profileRoutes)
-
+app.route('/',adminRouter)
   
 serve({
     fetch: app.fetch,

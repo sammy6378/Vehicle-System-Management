@@ -1,11 +1,18 @@
 
 import { serial,date,varchar,integer,boolean, pgTable,pgEnum,text,timestamp,decimal} from "drizzle-orm/pg-core";
 import { relations,sql } from "drizzle-orm";
-
-
+export type TStatus = keyof typeof accountStatusEnum;
 
 // authentication tables
 export const roleEnum = pgEnum("role", ['admin','user']);
+
+
+// accountstatus
+export const accountStatusEnum = pgEnum("accountStatus",['active','disabled']);
+
+// ticketstatus
+export const ticketStatusEnum = pgEnum("ticketStatus",['In progress','resolved']);
+
 
 // users Table
 export const users = pgTable('users', {
@@ -16,6 +23,7 @@ export const users = pgTable('users', {
   contact_phone: varchar('contact_phone').notNull(),
   address: text('address').notNull(),
   role: roleEnum("role").default("user"),
+  status:accountStatusEnum("status").default("active"),
   created_at: timestamp('created_at').default(sql`NOW()`).notNull(),
   updated_at: timestamp('update_at').default(sql`NOW()`).notNull()
 });
@@ -114,7 +122,7 @@ export const customerSupportTickets = pgTable('customer_support_tickets', {
     user_id: integer('user_id').notNull().references(() => users.user_id,{onDelete:"cascade"}),
     subject: varchar('subject').notNull(),
     description: text('description').notNull(),
-    status: varchar('status').notNull(),
+    status: varchar('status').default("In progress").notNull(),
     created_at: timestamp('created_at').default(sql`NOW()`).notNull(),
     updated_at: timestamp('update_at').default(sql`NOW()`).notNull()
   });
@@ -220,3 +228,5 @@ export type TSLocations = typeof locations.$inferSelect
 // fleet management
 export type TIFleetManagement = typeof fleetManagement.$inferInsert
 export type TSFleetManagement = typeof fleetManagement.$inferSelect
+
+export type TRUser = Array<{ id: number }>;

@@ -24,10 +24,6 @@ export const getPayment = async ( id:number)=>{
 export const createPayment = () => {
     return {
       async createCheckoutSession(bookingId: number, amount: number){
-        if (typeof amount !== 'number' || isNaN(amount)) {
-          throw new Error("Invalid amount provided");
-        }
-        
         const session = await stripes.checkout.sessions.create({
           payment_method_types: ["card"],
           line_items: [

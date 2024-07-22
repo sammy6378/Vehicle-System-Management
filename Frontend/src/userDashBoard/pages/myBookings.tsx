@@ -90,7 +90,7 @@ function Projects() {
                                     <td className="px-4 py-2">{data.booking_period}</td>
                                     <td className="px-4 py-2">{data.booking_date}</td>
                                     <td className="px-4 py-2">{data.return_date}</td>
-                                    <td className="px-4 py-2">{data.booking_status}</td>
+                                    <td className={`px-4 py-2 ${data.booking_status ? 'text-green-500' : 'text-red-500'}`}>{data.booking_status}</td>
                                     <td className="px-4 py-2">
                                     <button onClick={() => makePayment(data.booking_id,data.total_amount)} className="btn btn-primary btn-sm">Pay</button>
                                     </td>

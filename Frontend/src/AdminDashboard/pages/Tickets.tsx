@@ -1,9 +1,25 @@
 import { useState } from 'react';
 import { adminservices, TTickects } from '../service';
+import { authService, TUser } from '../../services/service';
+
+
 
 
 const SupportTickets = () => {
   const { data: tickets, error, isLoading } = adminservices.useGetTickectsQuery();
+  const {data:getusers} = authService.useGetUsersQuery();
+
+  const combineData = () => {
+    if (!tickets || !getusers) return [];
+
+    return tickets.map((spec: TTickects) => {
+      const user = getusers.find((v: TUser) => v.user_id === spec.user_id);
+      return { ...spec, ...user };
+    });
+  };
+
+  const combinedData = combineData();
+  
  
 //   const [respondToTicket] = useRespondToTicketMutation();
   const [response, setResponse] = useState('');
@@ -25,9 +41,9 @@ const SupportTickets = () => {
   if (error) return <div>Error loading tickets.</div>;
 
   return (
-    <div className="p-6 space-y-4">
-      {tickets?.map((ticket) => (
-        <div key={ticket.ticket_id} className="p-4 border rounded-lg shadow-lg bg-white">
+    <div className="grid grid-cols-2 p-6 space-x-4">
+      {combinedData?.map((ticket) => (
+        <div key={ticket.ticket_id} className="p-3 border rounded-lg shadow-lg bg-white">
           <div className="flex items-center space-x-4">
             <img
               src="https://via.placeholder.com/50" // Placeholder for user photo
@@ -35,7 +51,7 @@ const SupportTickets = () => {
               className="w-12 h-12 rounded-full"
             />
             <div>
-              <h3 className="text-lg font-bold">{ticket.email}</h3>
+              <a  className="text-lg text-orange-500 font-bold" href={`mailto:${ticket.email}`}>{ticket.email}</a>
               <p className="text-gray-500">{ticket.subject}</p>
             </div>
           </div>

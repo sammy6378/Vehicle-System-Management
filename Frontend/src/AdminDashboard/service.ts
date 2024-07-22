@@ -22,6 +22,16 @@ export type TTickects={
     email:string
 }
 
+export type TFleets ={
+    fleet_id:number;
+    vehiclespec_id:number;
+    acquisition_date:string;
+    depreciation_rate:string;
+    current_value: string;
+    maintenance_cost: string;
+    status: string;
+}
+
 
 export const adminservices =createApi({
     reducerPath: 'adminservice',
@@ -43,6 +53,9 @@ export const adminservices =createApi({
         getTickects: builder.query<TTickects[],void>({
             query: () => 'tickets',
         }),
+        getFleets: builder.query<TFleets[],void>({
+            query: () => 'fleets'
+        })
         
     })
 });

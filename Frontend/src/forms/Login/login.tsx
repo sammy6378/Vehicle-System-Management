@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuthUserMutation } from "../../services/service";
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from "../Auth/Authslice";
+import { login } from "../Auth/UserSlice";
+import { setAdmin } from "../Auth/AdminSlice";
 import { useDispatch } from "react-redux";
 import { PulseLoader } from "react-spinners";
 
@@ -24,16 +25,16 @@ function Login() {
         setLoading(true);
         try {
             const response = await userLogin(data).unwrap();
-            const { token, user_id, user_name, role,status } = response;
+            const { token, user_id, user_name, role, status } = response;
          
             if (status === 'disabled') {
                 setErrorMessage('Your account is disabled. Please contact support.');
             } else if (role && typeof role === 'string') {
-                dispatch(login({ token, user_id, user_name, role }));
-    
                 if (role.includes('admin')) {
+                    dispatch(setAdmin({ token, user_id, user_name, role }));
                     navigate('/admin-dashboard');
                 } else if (role.includes('user')) {
+                    dispatch(login({ token, user_id, user_name, role }));
                     navigate('/dashboard');
                 } else {
                     setErrorMessage("You do not have the required privileges.");
@@ -48,6 +49,7 @@ function Login() {
             setLoading(false);
         }
     };
+
     return (
         <>
             <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-40">

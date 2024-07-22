@@ -96,14 +96,10 @@ function Payment() {
   return (
     <div className='bg-slate-50 p-4'>
       <ToastContainer />
-      <div className="flex items-center text-black">
-        <span className={`w-6 h-6 bg-indigo-600 text-white border border-gray-200 rounded-full flex justify-center items-center mr-3 lg:w-10 lg:h-10`}>1</span>Booking Details
-      </div>
-
       <div className="flex flex-col">
         <form onSubmit={handleSubmit(onSubmit)}>
           <>
-            <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
+            <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
               <h2 className="text-center text-xl font-bold mb-4">Booking Details</h2>
               <div className="text-gray-600 text-lg font-medium mb-4">
                 Payment amount

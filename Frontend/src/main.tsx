@@ -36,6 +36,8 @@ import Edit from './AdminDashboard/pages/EditData.tsx'
 import CreateTicketForm from './userDashBoard/pages/CreateTicket.tsx'
 import NotificationPage from './userDashBoard/pages/Notifications.tsx'
 import SupportTickets from './AdminDashboard/pages/Tickets.tsx'
+import FleetManagement from './AdminDashboard/pages/ManageFleet.tsx'
+import FleetDetail from './AdminDashboard/pages/FleetDetails.tsx'
 
 const router = createBrowserRouter([
 
@@ -168,6 +170,14 @@ element:  <LayoutAdmin><Edit /></LayoutAdmin>,
 {
   path: '/reply-tickets',
   element:  <LayoutAdmin><SupportTickets /></LayoutAdmin>,
+},
+{
+  path: '/fleet-management',
+  element:  <LayoutAdmin><FleetManagement /></LayoutAdmin>,
+},
+{
+  path: '/vehicle/:id/manage-fleet',
+  element: <LayoutAdmin><FleetDetail /></LayoutAdmin>,
 }
 ]);
 

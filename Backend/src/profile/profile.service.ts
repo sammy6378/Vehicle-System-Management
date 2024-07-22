@@ -3,6 +3,8 @@
 import { eq } from "drizzle-orm"
 import db from "../drizzle/db"
 import { profile } from "../drizzle/schema"
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' }); 
 
 // get all profiles
 

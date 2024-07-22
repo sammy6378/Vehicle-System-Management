@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify'; // Import toast container
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast notifications
@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 type formData = {
   user_id: number;
   subject: string;
+  email:string | undefined;
   description: string;
 };
 
@@ -18,6 +19,7 @@ const CreateTicketForm = () => {
   const authState = useSelector((state: RootState) => state.auth);
   const user = authState.user as TUser | null;
   const { user_id } = user as TUser;
+
   const [createTicket] = authService.useCreateTicketMutation();
   const { register, handleSubmit } = useForm<formData>();
 

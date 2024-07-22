@@ -3,6 +3,7 @@ import { getAllController,getController,createController,deleteController,update
 import { getpayments,getPayment,createPayment,updatePayment,deletePayment } from "./payment.service";
 import stripe from "stripe";
 import { Context } from "hono";
+import { stripes } from "../drizzle/db";
 
 export const getAllPayment = getAllController(getpayments)
 export const getPaymentById = getController(getPayment)
@@ -37,7 +38,7 @@ export const createPayments = {
     const rawBody = await c.req.raw.text();
 
     try {
-      const event = stripe.webhooks.constructEvent(
+      const event = stripes.webhooks.constructEvent(
         rawBody,
         sig!,
         process.env.STRIPE_WEBHOOK_SECRET!

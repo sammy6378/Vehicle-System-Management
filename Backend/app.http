@@ -89,3 +89,29 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJ1c2VyX25h
   "status": "disabled"
 }
 
+###
+Get http://localhost:8000/tickets
+
+
+###
+POST http://localhost:8000/fleet
+Content-Type: application/json
+
+{
+
+  "vehiclespec_id": 29,
+  "acquisition_date": "8/22/2017",
+  "depreciation_rate":0.03,
+  "current_value":2100000,
+  "maintenance_cost":8000,
+  "status": "Good"
+}
+
+###
+POST https://car-server-busc.onrender.com/checkout-session
+Content-Type: application/json
+
+{  
+  "bookingId":10,
+  "amount":1000000
+}

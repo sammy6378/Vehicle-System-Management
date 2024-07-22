@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/Store';
 import { TUser } from '../../services/service';
+import { AdminAuthState } from '../../forms/Auth/AdminSlice';
 
 const Navbar = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -17,9 +18,12 @@ const Navbar = () => {
   }
   
   const authState = useSelector((state: RootState) => state.auth);
+  const adminAuthState = useSelector((state: RootState) => state.adminAuth);
   const user = authState.user as TUser | null;
-  const {user_name,email} = user as TUser;
-  console.log(email)
+  const admin = adminAuthState.admin as TUser | null;
+
+  const { user_name, email } = admin ?? user ?? { user_name: '', email: '' };
+  
   return (
     <nav className="z-50 w-full bg-gray-800 border-b border-gray-500 dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">

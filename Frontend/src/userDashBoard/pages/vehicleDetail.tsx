@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { FaCar, FaCogs, FaRoad } from 'react-icons/fa';
 import { useGetVehicleSpecQuery} from "../../services/service";
 import { FaLocationPin } from 'react-icons/fa6';
+import Related from './RelatedVehicles';
 
 
 
@@ -57,6 +58,7 @@ const VehicleDetail = () => {
         <div className="mt-6 flex space-x-4">
           <Link to={`/vehicle/${vehicle.vehiclespec_id}/booking_details`} className="bg-blue-600 text-white px-4 py-2 rounded">Book Now</Link>
         </div>
+        <Related />
       </div>
     </div>
   );

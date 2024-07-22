@@ -7,7 +7,15 @@ import { customerSupportTickets } from "../drizzle/schema"
 
 // get all tickets
 export const getTickets = async ( )=>{
-    return await db.query.customerSupportTickets.findMany()
+    return await db.query.customerSupportTickets.findMany({
+        with:{
+            user:{
+                columns:{
+                    email:true
+                }
+            }
+        }
+    })
 }
 
 // get ticket by id
@@ -15,11 +23,11 @@ export const getTicket = async ( id:number)=>{
     return await db.query.customerSupportTickets.findFirst({
     where:eq(customerSupportTickets.ticket_id,id),
     with:{
-        user:{
-            columns:{
-                email:true
-            }
+       user:{
+        columns:{
+            email:true
         }
+       }
     }
 })
 }

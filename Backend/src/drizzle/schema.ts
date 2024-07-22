@@ -143,7 +143,7 @@ export const customerSupportTickets = pgTable('customer_support_tickets', {
     fleet_id: serial('fleet_id').notNull().primaryKey(),
     vehiclespec_id: integer('vehiclespec_id').notNull().references(() =>vehicleSpecifications.vehiclespec_id, {onDelete:"cascade"}),
     acquisition_date: date('acquisition_date').notNull(),
-    depreciation_rate: integer('depreciation_rate').notNull(),
+    depreciation_rate: decimal('depreciation_rate').notNull(),
     current_value: integer('current_value').notNull(),
     maintenance_cost: integer('maintenance_cost').notNull(),
     status: varchar('status').notNull(),
@@ -159,10 +159,16 @@ export const customerSupportTickets = pgTable('customer_support_tickets', {
 export const userRelations = relations(users,({one,many})=>({
   auth:one(authentication,{fields:[users.user_id],references:[authentication.user_id]}),
   profile: one(profile,{fields:[users.user_id],references:[profile.user_id]}),
-  ticket: one(customerSupportTickets,{fields:[users.user_id],references:[customerSupportTickets.user_id]}),
   bookings:many(bookings),
   tickets:many(customerSupportTickets)
 }));
+
+// tickets relations
+
+export const ticketRelations = relations(customerSupportTickets,({one})=>({
+  user: one(users,{fields:[customerSupportTickets.user_id],references:[users.user_id]}),
+}));
+
 
 // profile relations
 

@@ -1,9 +1,8 @@
 
 import { eq } from "drizzle-orm"
-import db from "../drizzle/db"
+import db, { stripes } from "../drizzle/db"
 import { bookings, payments, TIPayments, vehicle } from "../drizzle/schema"
-import { number } from "zod"
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+
 
 // get all payements
 export const getpayments = async ( )=>{
@@ -25,7 +24,7 @@ export const getPayment = async ( id:number)=>{
 export const createPayment = () => {
     return {
       async createCheckoutSession(bookingId: number, amount: number){
-        const session = await stripe.checkout.sessions.create({
+        const session = await stripes.checkout.sessions.create({
           payment_method_types: ["card"],
           line_items: [
             {
@@ -43,7 +42,7 @@ export const createPayment = () => {
           success_url: `http://localhost:5173/success`,
           cancel_url: `http://localhost:5173/cancel`,
           metadata: {
-            bookingId: bookingId,
+            bookingId: bookingId.toString(),
           },
         });
   
@@ -51,7 +50,7 @@ export const createPayment = () => {
       },
   
       async handleSuccessfulPayment(sessionId: string) {
-        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        const session = await stripes.checkout.sessions.retrieve(sessionId);
         const bookingId = parseInt(session.metadata!.bookingId);
   
         // Handle possible null value for session.amount_total
@@ -74,7 +73,8 @@ export const createPayment = () => {
             amount: amountTotal / 100,
             payment_status: "Approved",
             payment_method: session.payment_method_types[0],
-            transaction_id: session.payment_intent,
+            transaction_id: session.payment_intent as unknown as number ,
+            payment_date:new Date() 
           })
           .returning();
       },

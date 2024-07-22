@@ -6,7 +6,7 @@ import '../../App.scss'
   import { useSelector } from 'react-redux';
   import { RootState } from '../../store/Store';
   import { useDispatch } from 'react-redux';
-  import { logout } from '../../forms/Auth/Authslice';
+  import { logout } from '../../forms/Auth/UserSlice';
   import { FaUser, FaCog, FaSignOutAlt,FaBell } from 'react-icons/fa';
   import { Link } from 'react-router-dom';
 import { TUser } from '../../services/service';

@@ -1,9 +1,10 @@
+import { PulseLoader } from "react-spinners";
 import { authService } from "../../services/service";
 import { adminservices } from "../service";
 import { useState } from "react";
 
 const UserManagement = () => {
-  const { data: getUsers} = authService.useGetUsersQuery();
+  const { data: getUsers,isLoading} = authService.useGetUsersQuery();
   const [updateUserStatus] = adminservices.useUpdateStateMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [users, setUsers] = useState(getUsers || []);
@@ -36,7 +37,7 @@ const UserManagement = () => {
           <tr>
             <th className="py-2 px-4 border-b">Name</th>
             <th className="py-2 px-4 border-b">Email</th>
-            <th className="py-2 px-4 border-b">User_Name</th>
+            {/* <th className="py-2 px-4 border-b">User_Name</th> */}
             <th className="py-2 px-4 border-b">Contact_Phone</th>
             <th className="py-2 px-4 border-b">Address</th>
             <th className="py-2 px-4 border-b">Role</th>
@@ -44,12 +45,13 @@ const UserManagement = () => {
             <th className="py-2 px-4 border-b">Disable</th>
           </tr>
         </thead>
+        {isLoading?(<div className="flex justify-center py-2"><PulseLoader color="#19f519" /></div>):(
         <tbody>
           {users?.map(user => (
             <tr key={user.user_id} className="text-slate-300">
               <td className="py-2 px-4 border-b">{user.full_name}</td>
               <td className="py-2 px-4 border-b text-ellipsis overflow-hidden whitespace-nowrap">{user.email}</td>
-              <td className="py-2 px-4 border-b">{user.user_name}</td>
+              {/* <td className="py-2 px-4 border-b">{user.user_name}</td> */}
               <td className="py-2 px-4 border-b">{user.contact_phone}</td>
               <td className="py-2 px-4 border-b">{user.address}</td>
               <td className="py-2 px-4 border-b">{user.role}</td>
@@ -66,6 +68,7 @@ const UserManagement = () => {
             </tr>
           ))}
         </tbody>
+        )}
       </table>
     </div>
   );

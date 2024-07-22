@@ -36,10 +36,10 @@ const Sidebar = () => {
           <span className="material-icons">support</span>
           <span className="ml-2">Customer Support</span>
         </Link>
-        <a href="#" className="text-gray-300 dark:hover:bg-gray-600 hover:text-white px-4 py-2 flex items-center">
+        <Link to="/fleet-management" className="text-gray-300 dark:hover:bg-gray-600 hover:text-white px-4 py-2 flex items-center">
           <span className="material-icons">commute</span>
           <span className="ml-2">Fleet Management</span>
-        </a>
+        </Link>
       </nav>
       <div className="pl-1 mt-6">
         <Link to="/Login" className="text-orange-500 hover:bg-slate-700 hover:text-white px-4 py-2 flex items-center">

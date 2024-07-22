@@ -42,7 +42,6 @@ export type TVehicleSpec = {
         manufacturer: string;
         model: string;
         year: number;
-        status:string;
         price: number;
         price_type:string;
         type:string;

@@ -10,7 +10,7 @@ const VehicleManagement = () => {
 
   return (
     <div className="p-6 overflow-x-auto">
-      <table className="min-w-full table-auto border border-slate-700">
+      <table className="min-w-full table-auto border border-slate-700 rounded-xl">
         <thead className="bg-base-100">
           <tr>
             <th className="py-2 px-4 border-b">Manufacturer</th>

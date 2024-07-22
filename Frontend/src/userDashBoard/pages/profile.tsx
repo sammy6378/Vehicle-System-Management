@@ -1,4 +1,4 @@
-import me from '../../assets/html.jpg'
+
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { TUser } from '../../services/service';
@@ -6,7 +6,7 @@ import { RootState } from '../../store/Store';
 import { useGetUsersQuery } from '../../services/service';
 
 export default function ProfilePage() {
-  const { data: loggedUser, isLoading } = useGetUsersQuery();
+  const { data: loggedUser} = useGetUsersQuery();
 
   const authState = useSelector((state: RootState) => state.auth);
   const user = authState.user as TUser | null;

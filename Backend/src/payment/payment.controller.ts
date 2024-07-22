@@ -23,7 +23,7 @@ export const createPayments = {
         amount
       );
 
-      return c.json({ sessionId: session.id });
+      return c.json({ sessionId: session.id, checkoutUrl: session.url });
     } catch (error) {
       console.error("Error creating checkout session:", error);
       return c.json(

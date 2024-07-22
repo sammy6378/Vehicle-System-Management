@@ -61,7 +61,7 @@ const router = createBrowserRouter([
   // user dashboard
   {
     path: '/dashboard',
-    element:  <ProtectedRoute><Layout><Dash /></Layout></ProtectedRoute>,
+    element:  <ProtectedRoute requiredRole="user"><Layout><Dash /></Layout></ProtectedRoute>,
     errorElement: <Error />,
   },
   {
@@ -144,7 +144,7 @@ const router = createBrowserRouter([
   // admin dashboard
 {
 path: '/admin-dashboard',
-element:  <ProtectedRoute><LayoutAdmin><Dashboard /></LayoutAdmin></ProtectedRoute>,
+element:  <ProtectedRoute requiredRole="admin"><LayoutAdmin><Dashboard /></LayoutAdmin></ProtectedRoute>,
 errorElement: <Errors />,
 },
 {

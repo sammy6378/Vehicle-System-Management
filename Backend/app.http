@@ -43,8 +43,8 @@ POST http://localhost:8000/login
 Content-Type: application/json
 
 {
-    "email":"mukirisimon22@gmail.com",
-    "password":"@simo*##"
+    "email":"samuel202mwangi@gmail.com",
+    "password":"@sammy*##"
 }
 
 

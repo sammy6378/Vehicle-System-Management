@@ -2,7 +2,6 @@ import { authService, TUser, TVehicleSpec } from "../../services/service";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/Store";
 import { Link, useParams } from "react-router-dom";
-import { loadStripe } from '@stripe/stripe-js';
 
 
 function Projects() {
@@ -37,7 +36,7 @@ function Projects() {
     const makePayment = async (bookingId: number, amount: number) => {
         console.log(bookingId,amount)
             try {
-                const response = await fetch('https://vehicle-system-backend.onrender.com/checkout-session', {
+                const response = await fetch('https://car-server-busc.onrender.com/checkout-session', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

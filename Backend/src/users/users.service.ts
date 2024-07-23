@@ -1,5 +1,6 @@
 
-import bcrypt from 'bcrypt'
+import bycrpt from 'bcrypt'
+
 
 // get all users
 import { eq } from "drizzle-orm"
@@ -38,7 +39,7 @@ export const updateUser = async (id:number, res:any): Promise<string | undefined
 
 // reset password
 export const resetPassword = async (email: string, password: string) => {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bycrpt.hash(password, 10);
     
     // First, get the user based on the email
     const user = await db
@@ -58,5 +59,3 @@ export const resetPassword = async (email: string, password: string) => {
   
     return "Password reset successfully";
   };
-
-  

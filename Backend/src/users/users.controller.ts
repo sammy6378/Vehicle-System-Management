@@ -3,12 +3,12 @@ import { Context } from "hono";
 import { getAllController,getController,createController,deleteController,updateController } from "../generics/gen.controller";
 import { getUser,getUsers, createUser,deleteUser,updateUser } from "./users.service";
 import { resetPassword } from "./users.service";
-import bcrypt from 'bcrypt'
 import{sign,verify} from "hono/jwt"
 import {reset } from "../mailer/email";
 import { eq } from "drizzle-orm"
 import db from "../drizzle/db"
 import { users } from "../drizzle/schema"
+
 
 
 export const getAllUsers = getAllController(getUsers)
@@ -71,3 +71,5 @@ export const resetPasswordN = async (c: Context) => {
       return c.json({ error: error.message }, 500);
     }
   };
+
+ 

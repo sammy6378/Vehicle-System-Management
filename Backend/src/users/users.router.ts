@@ -5,6 +5,7 @@ import {getAllUsers,getUserById,createNewUser,deleteUserById,updateUserN, resetP
 import { Hono } from 'hono'
 import { User } from '../validators'
 
+
 export const usersRouter = new Hono()
 
 usersRouter.get('/users', getAllUsers)
@@ -18,3 +19,4 @@ usersRouter.put('/user/:id', updateUserN)
 usersRouter.delete('/user/:id', deleteUserById)
 usersRouter.post('/reset-password',resetPasswordN)
 usersRouter.post('/forgot-password',forgotPassword)
+

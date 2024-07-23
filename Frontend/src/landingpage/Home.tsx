@@ -41,7 +41,7 @@ function Home({showModal}:any) {
             <a href="#collection" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white">Collections</a>
             <a href="#contact" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white">Contact Us</a>
             <a href="#" onClick={showModal} className="block px-3 py-2 rounded-md text-base font-medium text-white">Sign In</a>
-            <a href="#" className="block px-3 py-2 rounded-md text-base font-medium text-white bg-purple-600 hover:bg-purple-700">Sign Up</a>
+            <Link to="/register" className="block px-3 py-2 rounded-md text-base font-medium text-white bg-purple-600 hover:bg-purple-700">Sign Up</Link>
           </div>
         </div>
       )}

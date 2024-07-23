@@ -2,20 +2,25 @@
 import { Bar} from 'react-chartjs-2';
 import 'chart.js/auto';
 import Metrics from './Metrics';
+import { authService } from '../../services/service';
 
 
 const Dashboard = () => {
+  const { data } =authService.useGetBookingsQuery();
+  if (!data) return null;
+
+
   const barData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
     datasets: [
       {
         label: 'Total Bookings',
-        data: [65, 59, 80, 81, 56, 55],
+        data: [65, 59, 80, 81, 56, 55] || [],
         backgroundColor: 'rgba(54, 162, 235, 0.6)',
       },
       {
         label: 'Revenue Generated',
-        data: [28, 48, 40, 19, 86, 27],
+        data: data?.map(item => item.total_amount) || [],
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
       },
     ],

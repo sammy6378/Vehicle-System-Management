@@ -4,6 +4,7 @@ import { Link,useNavigate } from 'react-router-dom';
 import { useRegisterUserMutation } from '../services/service';
 import { useForm } from "react-hook-form";
 import {toast,Toaster} from 'sonner'
+import { useState } from 'react';
 
 type formData = {
   full_name: string;
@@ -15,11 +16,15 @@ type formData = {
 }
 function Register() {
   const { register, handleSubmit, formState: { errors } } = useForm<formData>();
+  const [errorMessage, setErrorMessage] = useState("");
   const [registerUser] = useRegisterUserMutation();
   const navigate = useNavigate();
     
   const onSubmit = async (data:formData) => {
     try {
+      if(data.email){
+        setErrorMessage("email already exists.Try again");
+      }
         await registerUser(data).unwrap();
         toast.success('Registration successful!');
         navigate('/login'); // Navigate after successful login
@@ -55,6 +60,7 @@ function Register() {
       {/* Right Side with Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8 bg-slate-200 shadow-lg">
         <div className="max-w-md w-full">
+        {errorMessage && <p className="text-red-600 mb-4 text-center">{errorMessage}</p>}
           <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-3">

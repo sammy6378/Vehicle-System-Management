@@ -97,7 +97,10 @@ function Login() {
                             {loading ? <PulseLoader color="#ffffff" /> : "Login Now"}
                         </button>
                     </form>
+                    <div className="flex justify-between items-center">
+                    <p className="hover:underline"><Link to='/'>Home</Link></p>
                     <p className="text-center mt-4 text-gray-600">Not a member? <Link to="/register" className="text-purple-600 hover:text-purple-800">Signup Now</Link></p>
+                    </div>
                 </div>
             </div>
         </>

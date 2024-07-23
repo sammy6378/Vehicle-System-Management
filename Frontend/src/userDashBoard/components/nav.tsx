@@ -5,22 +5,18 @@ import '../../App.scss'
   import { useState } from 'react';
   import { useSelector } from 'react-redux';
   import { RootState } from '../../store/Store';
-  import { useDispatch } from 'react-redux';
-  import { logout } from '../../forms/Auth/UserSlice';
   import { FaUser, FaCog, FaSignOutAlt,FaBell } from 'react-icons/fa';
   import { Link } from 'react-router-dom';
 import { TUser } from '../../services/service';
+import { useConfirmLogout } from '../pages/LogoutHook';
 
 
 
-  
-  export default function Nav() {
 
 
-      const dispatch = useDispatch();
-      const handleLogout = () => {
-          dispatch(logout());
-      };
+export default function Nav() {
+
+    const { openModal, ConfirmLogoutModal } = useConfirmLogout();
 
       const authState = useSelector((state: RootState) => state.auth);
       const user = authState.user as TUser | null;
@@ -67,9 +63,12 @@ import { TUser } from '../../services/service';
                 <Link to="/settings" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
                   <FaCog className="mr-2" /> Settings
                 </Link>
-                <Link to="/login" onClick={handleLogout} className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                  <FaSignOutAlt className="mr-2" /> Logout
-                </Link>
+                <div className='flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer'>
+                  <a className='flex items-center' href="#" onClick={openModal}>
+                  <FaSignOutAlt className="mr-2" />  Logout
+                  </a>
+                  <ConfirmLogoutModal />
+                </div>
               </div>
             )}
           </div>

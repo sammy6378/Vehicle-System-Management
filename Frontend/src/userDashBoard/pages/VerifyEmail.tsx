@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { authService } from "../../services/service"
 import { TForgot } from "../../services/service";
 import { toast, ToastContainer } from 'react-toastify';
+import { Link } from "react-router-dom";
 
 function ResetEmail() {
 
@@ -44,11 +45,11 @@ function ResetEmail() {
       </p>
       <p className="mt-4 text-sm text-gray-600">
         Already have an account?{' '}
-        <a href="/login" className="text-blue-500 hover:text-blue-600">Log in</a>
+        <Link to="/login" className="text-blue-500 hover:text-blue-600">Log in</Link>
       </p>
       <p className="mt-2 text-sm text-gray-600">
         Don't have an account?{' '}
-        <a href="/register" className="text-blue-500 hover:text-blue-600">Sign up</a>
+        <Link to="/register" className="text-blue-500 hover:text-blue-600">Sign up</Link>
       </p>
     </form>
     </div>

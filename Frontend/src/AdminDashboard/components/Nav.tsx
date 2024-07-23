@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/Store';
 import { TUser } from '../../services/service';
 import me from '../../assets/html.jpg'
+import { useConfirmLogout } from '../../userDashBoard/pages/LogoutHook';
 
 const Navbar = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
+  const { openModal, ConfirmLogoutModal } = useConfirmLogout();
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -66,7 +66,8 @@ const Navbar = () => {
                       <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
                     </li>
                     <li>
-                      <Link to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</Link>
+                      <a href="#" onClick={openModal} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                      <ConfirmLogoutModal />
                     </li>
                   </ul>
                 </div>

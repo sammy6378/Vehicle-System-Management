@@ -7,6 +7,7 @@ import { authService } from '../../../services/service';
 import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 export type formData = {
   user_id: number,
@@ -77,6 +78,8 @@ function Payment() {
     setValue("return_date", calculateReturnDate(today, rentalPeriod));
   }, [rentalPeriod, setValue]);
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data: formData) => {
     data.user_id = UId;
     data.vehiclespec_id = Number(vehicle?.vehiclespec_id);
@@ -87,6 +90,7 @@ function Payment() {
     try {
       await bookingData(data).unwrap();
       toast.success("Booking details saved successfully!");
+      navigate('/mybookings')
     } catch (error) {
       toast.error("Failed to save booking details.");
     }

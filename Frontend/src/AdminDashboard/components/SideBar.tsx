@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import '../../App.scss'
 import { useLocation } from "react-router-dom";
+import { useConfirmLogout } from '../../userDashBoard/pages/LogoutHook';
 const Sidebar = () => {
   const location = useLocation();
+  const { openModal, ConfirmLogoutModal } = useConfirmLogout();
   return (
     <nav className="bg-gray-800 border-r border-slate-600 h-screen w-64 flex flex-col bar">
       <div className="flex space-x-2 mt-3 pl-4">
@@ -42,10 +44,11 @@ const Sidebar = () => {
         </Link>
       </nav>
       <div className="pl-1 mt-6">
-        <Link to="/Login" className="text-orange-500 hover:bg-slate-700 hover:text-white px-4 py-2 flex items-center">
+        <a href="#" onClick={openModal} className="text-orange-500 hover:bg-slate-700 hover:text-white px-4 py-2 flex items-center">
           <span className="material-icons">exit_to_app</span>
           <span className="ml-2 ">Log Out</span>
-        </Link>
+          <ConfirmLogoutModal />
+        </a>
       </div>
     </nav>
   );

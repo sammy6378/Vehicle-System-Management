@@ -28,7 +28,6 @@ import Cancel from './userDashBoard/pages/payments/cancel.tsx'
 import LayoutAdmin from './AdminDashboard/components/LayoutAdmin.tsx'
 import Dashboard from './AdminDashboard/pages/AdminDash.tsx'
 import VehicleManagement from './AdminDashboard/pages/ManageVehicles.tsx'
-import Errors from './AdminDashboard/pages/Errors.tsx'
 import UserManagement from './AdminDashboard/pages/ManageUsers.tsx'
 import Branches from './AdminDashboard/pages/Branches.tsx'
 import Reports from './AdminDashboard/pages/Reports.tsx'
@@ -136,6 +135,11 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
+    path: 'contact-us',
+    element: <Contact />,
+    errorElement: <Error />,
+  },
+  {
     path: '/settings',
     element:  <Layout><SettingsPage /></Layout>,
     errorElement: <Error />,
@@ -145,7 +149,7 @@ const router = createBrowserRouter([
 {
 path: '/admin-dashboard',
 element:  <ProtectedRoute requiredRole="admin"><LayoutAdmin><Dashboard /></LayoutAdmin></ProtectedRoute>,
-errorElement: <Errors />,
+errorElement: <Error />,
 },
 {
 path: '/vehicle-management',

@@ -16,6 +16,26 @@ function Collection() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    responsive: [
+      {
+        breakpoint: 1024, // devices larger than 1024px
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768, // devices larger than 768px
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480, // devices larger than 480px
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ]
   };
 
   return (

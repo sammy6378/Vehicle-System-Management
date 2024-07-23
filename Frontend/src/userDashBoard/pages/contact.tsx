@@ -7,7 +7,7 @@ export default function Contact(){
             <h1 className="text-3xl font-bold">Contact Us</h1>
         </div>
     </header>
-    <main className="container mx-auto max-w-2xl mt-6 mb-2 p-4 border border-slate-700 bg-white rounded-lg shadow-lg">
+    <main className="container mx-auto max-w-2xl mt-4 mb-2 p-4 border border-slate-700 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
         <form action="#" method="POST">
             <div className="mb-4">

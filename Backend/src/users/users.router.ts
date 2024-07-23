@@ -1,6 +1,6 @@
 
 import { zValidator } from '@hono/zod-validator'
-import {getAllUsers,getUserById,createNewUser,deleteUserById,updateUserN} from './users.controller'
+import {getAllUsers,getUserById,createNewUser,deleteUserById,updateUserN, resetPasswordN, forgotPassword} from './users.controller'
 
 import { Hono } from 'hono'
 import { User } from '../validators'
@@ -16,3 +16,5 @@ usersRouter.post('/user', zValidator('json', User, (result, c) => {
  }), createNewUser)
 usersRouter.put('/user/:id', updateUserN)
 usersRouter.delete('/user/:id', deleteUserById)
+usersRouter.post('/reset-password',resetPasswordN)
+usersRouter.post('/forgot-password',forgotPassword)

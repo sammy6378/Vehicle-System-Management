@@ -37,6 +37,7 @@ import NotificationPage from './userDashBoard/pages/Notifications.tsx'
 import SupportTickets from './AdminDashboard/pages/Tickets.tsx'
 import FleetManagement from './AdminDashboard/pages/ManageFleet.tsx'
 import FleetDetail from './AdminDashboard/pages/FleetDetails.tsx'
+import ResetEmail from './userDashBoard/pages/VerifyEmail.tsx'
 
 const router = createBrowserRouter([
 
@@ -137,6 +138,11 @@ const router = createBrowserRouter([
   {
     path: 'contact-us',
     element: <Contact />,
+    errorElement: <Error />,
+  },
+  {
+    path: 'forgot-password',
+    element: <ResetEmail />,
     errorElement: <Error />,
   },
   {

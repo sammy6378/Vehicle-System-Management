@@ -87,7 +87,7 @@ function Login() {
                                 />
                                 <span className="ml-2 text-gray-700">Remember me</span>
                             </label>
-                            <a href="#" className="text-purple-600 hover:text-purple-800">Forgot password?</a>
+                            <Link to="/forgot-password" className="text-purple-600 hover:text-purple-800">Forgot password?</Link>
                         </div>
                         <button
                             type="submit"

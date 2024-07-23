@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { TReset } from "../userDashBoard/pages/ChangePassword";
 
 
 export interface TAuth {
@@ -108,6 +109,10 @@ export type  TFleet ={
     maintenance_cost: string;
     status: string;
 }
+
+export type TForgot ={
+    email:string;
+}
 // register service
 export const authService =createApi({
 reducerPath: 'authApi',
@@ -182,6 +187,20 @@ getTickets:builder.query<TTickects[],void>({
 getFleets:builder.query<TFleet[],void>({
     query: () => 'fleets',
 }),
+forgotPassword:builder.mutation<TForgot,Partial<TForgot>>({
+    query: (email) => ({
+        url: 'forgot-password',
+        method: 'POST',
+        body: email
+    }),
+}),
+resetPassword:builder.mutation<TReset,Partial<TReset>>({
+    query: (password) => ({
+        url: 'reset-password',
+        method: 'POST',
+        body: password
+    }),
+})
 
 }) 
 })

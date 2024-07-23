@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+        h1, h3, p {
+            margin: 10px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            background-color: #0b75ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="greeting">Hello There</h1> <br>
+    </header>
+
+    <main>
+        <h3>If you didn't request to reset your password, please ignore this email. Thank you.</h3>
+        <p>Please click on the button below to reset your password:</p> <br>
+        <a href="<%= link %>" class="button">Reset Password</a>
+    </main>
+
+    <footer>
+        <p>Have a great day👌</p>
+        <p>We are thrilled to serve you. For any inquiry, reach out to our customer support email:</p>
+        <p>Customer Support Email: <a href="mailto:samuelMwangi202@gmail.com">vehiclesupport@gmail.com</a></p>
+        <p>Copyright &copy; 2024 Lexus Car Ltd.</p>
+    </footer>
+    
+    <script>
+        const greetingElement = document.getElementById('greeting');
+        const currentHour = new Date().getHours();
+        
+        if (currentHour < 12) {
+            greetingElement.textContent = 'Good Morning';
+        } else if (currentHour < 18) {
+            greetingElement.textContent = 'Good Afternoon';
+        } else {
+            greetingElement.textContent = 'Good Evening';
+        }
+    </script>
+</body>
+</html>

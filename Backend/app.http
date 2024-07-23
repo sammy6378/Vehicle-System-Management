@@ -115,3 +115,11 @@ Content-Type: application/json
   "bookingId":10,
   "amount":1000000
 }
+
+###
+POST http://localhost:8000/forgot-password
+Content-Type: application/json
+
+{  
+  "email":"antonygatitu327@gmail.com"
+}

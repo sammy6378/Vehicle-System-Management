@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/Store';
 import { TUser } from '../../services/service';
-
+import me from '../../assets/html.jpg'
 
 const Navbar = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -43,7 +43,7 @@ const Navbar = () => {
             <div className="flex items-center ms-3 relative">
               <button onClick={toggleDropdown} type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded={dropdownVisible} aria-controls="dropdown-user">
                 <span className="sr-only">Open user menu</span>
-                <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+                <img className="w-8 h-8 rounded-full" src={me} alt="user photo" />
               </button>
               {dropdownVisible && (
                 <div className="z-50 absolute right-0 top-9 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">

@@ -35,7 +35,7 @@ export type TFleets ={
 
 export const adminservices =createApi({
     reducerPath: 'adminservice',
-    baseQuery:fetchBaseQuery({baseUrl:'http://localhost:8000'}),
+    baseQuery:fetchBaseQuery({baseUrl:'https://car-server-busc.onrender.com'}),
     endpoints: (builder) => ({
         getBranches: builder.query<TBranch[],void>({
             query: () => 'locations',

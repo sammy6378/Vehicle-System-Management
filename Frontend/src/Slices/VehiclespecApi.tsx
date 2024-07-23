@@ -4,7 +4,7 @@ import { TVehicleSpec } from "../services/service"
 
 export const VehcileSpecApi =createApi({
     reducerPath: 'VehcileSpecApi',
-    baseQuery:fetchBaseQuery({baseUrl:'http://localhost:8000'}),
+    baseQuery:fetchBaseQuery({baseUrl:'https://car-server-busc.onrender.com'}),
     endpoints: (builder) => ({
 
     getVehicleSpec:builder.query<TVehicleSpec[],void>({

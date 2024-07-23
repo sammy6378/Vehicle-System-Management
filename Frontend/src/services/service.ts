@@ -116,7 +116,7 @@ export type TForgot ={
 // register service
 export const authService =createApi({
 reducerPath: 'authApi',
-baseQuery:fetchBaseQuery({baseUrl:'http://localhost:8000'}),
+baseQuery:fetchBaseQuery({baseUrl:'https://car-server-busc.onrender.com'}),
 endpoints: (builder) => ({
 getUsers: builder.query<TUser[],void>({
     query: () => 'users',

@@ -53,7 +53,7 @@ function Login() {
     return (
         <>
             <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-40">
-                <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full relative">
+                <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full relative">
                     <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
                     {errorMessage && <p className="text-red-600 mb-4 text-center">{errorMessage}</p>}
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,7 +91,7 @@ function Login() {
                         </div>
                         <button
                             type="submit"
-                            className="w-full bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center justify-center"
+                            className="w-full mb-2 bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center justify-center"
                             disabled={loading}
                         >
                             {loading ? <PulseLoader color="#ffffff" /> : "Login Now"}

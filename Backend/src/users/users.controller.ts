@@ -37,7 +37,7 @@ export const forgotPassword = async (c: Context) => {
         exp: Math.floor(Date.now() / 1000) + (60 * 180), // 3 hours expiration
     };
       const token = sign({ email },secret); // Token expires in 1 hour
-      const resetUrl = `http://localhost:5173/reset-password?token=${token}`;
+      const resetUrl = `https://vehicle-system.vercel.app/reset-password?token=${token}`;
   
       await reset(email, resetUrl);
   

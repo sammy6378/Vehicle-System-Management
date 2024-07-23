@@ -13,7 +13,7 @@ export type TPayment ={
 export const paymentsAPI = createApi({
   reducerPath: "paymentsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000",
+    baseUrl: "https://car-server-busc.onrender.com",
   }),
   tagTypes: ["getPayments"],
   endpoints: (builder) => ({

@@ -9,7 +9,6 @@ export const VehcileSpecApi =createApi({
 
     getVehicleSpec:builder.query<TVehicleSpec[],void>({
         query: () => 'vehiclespecs',
-        providesTags: ['getVehicleSpec'],
     }),
     createVehicleSpec: builder.mutation<TVehicleSpec,Partial<TVehicleSpec>>({
         query: (newVehicleSpec) => ({
@@ -18,7 +17,6 @@ export const VehcileSpecApi =createApi({
             body: newVehicleSpec,
             providesTags: ['createVehicleSpec'],
         }),
-        invalidatesTags: ['getVehicleSpec'],
     }),
     updateVehicleSpec: builder.mutation<TVehicleSpec,Partial<TVehicleSpec>>({
         query: ({ vehiclespec_id,...vehicleSpec}) => ({
@@ -27,7 +25,6 @@ export const VehcileSpecApi =createApi({
             body: vehicleSpec,
             providesTags: ['updateVehicleSpec'],
         }),
-        invalidatesTags: ['getVehicleSpec'],
     }),
     deleteVehicleSpec: builder.mutation<void,number>({
         query: (vehiclespec_id) => ({
@@ -35,7 +32,6 @@ export const VehcileSpecApi =createApi({
             method: 'DELETE',
             providesTags: ['deleteVehicleSpec'],
         }),
-        invalidatesTags: ['getVehicleSpec'],
     })
 
     }) 

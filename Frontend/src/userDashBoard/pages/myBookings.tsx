@@ -1,7 +1,7 @@
 import { authService, TUser, TVehicleSpec } from "../../services/service";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/Store";
-import { Link, useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 
 function Projects() {
@@ -30,9 +30,6 @@ function Projects() {
 
     const combinedData = combineData();
 
-    const { id } = useParams();
-    const vehicle = vehicleData?.find(v => v.vehiclespec_id === Number(id));
-    
     const makePayment = async (bookingId: number, amount: number) => {
         console.log(bookingId,amount)
             try {

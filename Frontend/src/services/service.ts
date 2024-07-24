@@ -195,10 +195,10 @@ forgotPassword:builder.mutation<TForgot,Partial<TForgot>>({
     }),
 }),
 resetPassword:builder.mutation<TReset,Partial<TReset>>({
-    query: (password) => ({
+    query: ({password,token}) => ({
         url: 'reset-password',
         method: 'POST',
-        body: password
+        body: {password,token}
     }),
 })
 

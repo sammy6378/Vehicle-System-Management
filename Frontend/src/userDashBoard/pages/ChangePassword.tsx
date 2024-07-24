@@ -1,24 +1,37 @@
 import { useForm } from "react-hook-form";
 import { authService } from "../../services/service"
 import { toast, ToastContainer } from 'react-toastify';
+import { useLocation,useNavigate } from "react-router-dom";
 
 export type TReset = {
   password: string;
   confirm_password: string;
+  token: string; // URL query parameter token
 };
 
-function ResetEmail() {
+function ResetPassword() {
   const [reset] = authService.useResetPasswordMutation();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<TReset>();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get('token');
   
-  const onsubmit = async (data: TReset) => {
-    try {
-      await reset(data).unwrap(); // unwrap the promise
-      toast.success("Password updated successfully!");
-    } catch (error) {
-      toast.error("Failed to update password.");
-    }
-  };
+  const onsubmit = async () => {
+      if (!token) {
+        toast('Invalid or expired token.');
+        return;
+      }
+  
+      try {
+        await reset({ token, password }).unwrap();
+        toast('Password reset successful. You can now log in.'); 
+        navigate('/login'); // Redirect to login page on success
+      } catch (error) {
+        toast('An error occurred. Please try again.');
+      }
+    };
 
   const password = watch("password");
 
@@ -70,4 +83,4 @@ function ResetEmail() {
   );
 }
 
-export default ResetEmail;
+export default ResetPassword;

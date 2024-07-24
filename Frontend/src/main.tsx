@@ -38,6 +38,7 @@ import SupportTickets from './AdminDashboard/pages/Tickets.tsx'
 import FleetManagement from './AdminDashboard/pages/ManageFleet.tsx'
 import FleetDetail from './AdminDashboard/pages/FleetDetails.tsx'
 import ResetEmail from './userDashBoard/pages/VerifyEmail.tsx'
+import ResetPassword from './userDashBoard/pages/ChangePassword.tsx'
 
 const router = createBrowserRouter([
 
@@ -143,6 +144,11 @@ const router = createBrowserRouter([
   {
     path: 'forgot-password',
     element: <ResetEmail />,
+    errorElement: <Error />,
+  },
+  {
+    path: 'reset-password',
+    element: <ResetPassword />,
     errorElement: <Error />,
   },
   {

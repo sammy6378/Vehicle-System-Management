@@ -41,7 +41,7 @@ export const forgotPassword = async (c: Context) => {
 
 
     // Generate the token synchronously
-    const token = sign(payload, secret); // Token expires in 3 hours
+    const token = await sign(payload, secret); // Token expires in 3 hours
     const resetUrl = `https://vehicle-system.vercel.app/reset-password?token=${token}`;
 
     await reset(email, resetUrl);

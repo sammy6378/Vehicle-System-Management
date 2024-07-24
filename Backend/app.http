@@ -113,7 +113,7 @@ Content-Type: application/json
 
 {  
   "bookingId":10,
-  "amount":1000000
+  "amount":10000
 }
 
 ###

@@ -22,64 +22,75 @@ export const getPayment = async ( id:number)=>{
 // }
 
 export const createPayment = () => {
-    return {
-      async createCheckoutSession(bookingId: number, amount: number){
-        const session = await stripes.checkout.sessions.create({
-          payment_method_types: ["card"],
-          line_items: [
-            {
-              price_data: {
-                currency: "usd",
-                product_data: {
-                  name: "Car Rental Payment"
-                },
-                unit_amount: amount * 100, // Stripe expects amount in cents
+  return {
+    async createCheckoutSession(bookingId: number, amount: number) {
+      // Ensure amount is in cents and valid integer
+      const amountInCents = Math.round(amount * 100);
+
+      // Log the calculated amountInCents for debugging
+      console.log("Amount in cents:", amountInCents);
+
+      if (isNaN(amountInCents) || amountInCents <= 0) {
+        throw new Error("Invalid amount value after conversion to cents");
+      }
+
+      const session = await stripes.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: "Car Rental Payment",
               },
-              quantity: 1,
+              unit_amount: amountInCents,
             },
-          ],
-          mode: "payment",
-          success_url: `${process.env.FRONTEND_URL}/success`,
-          cancel_url: `${process.env.FRONTEND_URL}/cancel`,
-          metadata: {
-            bookingId: bookingId,
+            quantity: 1,
           },
-        });
-  
-        return session;
-      },
-  
-      async handleSuccessfulPayment(sessionId: string) {
-        const session = await stripes.checkout.sessions.retrieve(sessionId);
-        const bookingId = parseInt(session.metadata!.bookingId);
-  
-        // Handle possible null value for session.amount_total
-        const amountTotal = session.amount_total;
-        if (amountTotal === null) {
-          throw new Error("session.amount_total is null");
-        }
-  
-        // Update booking status
-        await db
-          .update(bookings)
-          .set({ booking_status: "Approved" })
-          .where(eq(bookings.booking_id, bookingId));
-  
-        // Create payment record
-        await db
-          .insert(payments) 
-          .values({
-            booking_id: bookingId,
-            amount: amountTotal / 100,
-            payment_status: "Approved",
-            payment_method: session.payment_method_types[0],
-            transaction_id: session.payment_intent as unknown as number ,
-            payment_date:new Date() 
-          })
-          .returning();
-      },
-    };
+        ],
+        mode: "payment",
+        success_url: `${process.env.FRONTEND_URL}/success`,
+        cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+        metadata: {
+          bookingId: bookingId,
+        },
+      });
+
+      return session;
+    },
+
+    async handleSuccessfulPayment(sessionId: string) {
+      const session = await stripes.checkout.sessions.retrieve(sessionId);
+      const bookingId = parseInt(session.metadata!.bookingId);
+
+      // Handle possible null value for session.amount_total
+      const amountTotal = session.amount_total;
+      if (amountTotal === null) {
+        throw new Error("session.amount_total is null");
+      }
+
+      // Update booking status
+      await db
+        .update(bookings)
+        .set({ booking_status: "Approved" })
+        .where(eq(bookings.booking_id, bookingId));
+
+      // Create payment record
+      await db
+        .insert(payments)
+        .values({
+          booking_id: bookingId,
+          amount: amountTotal / 100,
+          payment_status: "Approved",
+          payment_method: session.payment_method_types[0],
+          transaction_id: session.payment_intent as unknown as number,
+          payment_date: new Date(),
+        })
+        .returning();
+    },
   };
+};
+
   
 
 // // delete payment

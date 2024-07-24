@@ -17,32 +17,31 @@ export const createPayments = {
   async createCheckoutSession(c: Context) {
     try {
       const { bookingId, amount } = await c.req.json();
-    
-      const session = await paymentService.createCheckoutSession(
-        bookingId,
-        amount
-      );
+      
+      // Log the received values for debugging
+      console.log("Received bookingId:", bookingId);
+      console.log("Received amount:", amount);
+      
+      // Validate amount
+      if (isNaN(amount) || amount <= 0) {
+        throw new Error("Invalid amount value");
+      }
+
+      const session = await paymentService.createCheckoutSession(bookingId, amount);
 
       return c.json({ sessionId: session.id, checkoutUrl: session.url });
     } catch (error) {
       console.error("Error creating checkout session:", error);
-      return c.json(
-        { success: false, error: "Failed to create checkout session" },
-        500
-      );
+      return c.json({ success: false, error: "Failed to create checkout session" }, 500);
     }
   },
- 
+
   async handleWebhook(c: Context) {
     const sig = c.req.header("stripe-signature");
     const rawBody = await c.req.raw.text();
 
     try {
-      const event = stripes.webhooks.constructEvent(
-        rawBody,
-        sig!,
-        process.env.STRIPE_WEBHOOK_SECRET!
-      );
+      const event = stripes.webhooks.constructEvent(rawBody, sig!, process.env.STRIPE_WEBHOOK_SECRET!);
 
       if (event.type === "checkout.session.completed") {
         const session = event.data.object;

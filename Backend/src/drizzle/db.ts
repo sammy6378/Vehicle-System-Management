@@ -11,7 +11,7 @@ const client = neon(process.env.DATABASE_URL as string);
 
 const db = drizzle(client, { schema, logger: true })  //create a drizzle instance
 
-export const stripes = new Stripe(process.env.STRIPE_WEBHOOK_SECRET!,{
+export const stripes = new Stripe(process.env.STRIPE_SECRET_KEY!,{
     apiVersion:"2024-06-20",
     typescript:true
 })

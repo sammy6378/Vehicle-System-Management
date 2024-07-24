@@ -12,6 +12,9 @@ export default function Nav() {
   const { openModal, ConfirmLogoutModal } = useConfirmLogout();
   const authState = useSelector((state: RootState) => state.auth);
   const user = authState.user as TUser | null;
+  if (!user) {
+    return null; // or return some placeholder component
+  }
   const { user_name,user_id } = user as TUser;
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const {data:getProfile} = authService.useGetProfileQuery();

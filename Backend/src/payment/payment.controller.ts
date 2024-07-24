@@ -13,33 +13,26 @@ export const updatePaymentN = updateController(getPayment,updatePayment)
 
 const paymentService = createPayment();
 
+
 export const createPayments = {
   async createCheckoutSession(c: Context) {
     try {
-      const rawBody = await c.req.raw.text(); // Get the raw body
-      console.log('Raw request body:', rawBody); // Log the raw body
-      const { bookingId, amount } = JSON.parse(rawBody);
+      const { bookingId, amount } = await c.req.json();
 
       console.log('Received bookingId:', bookingId);
       console.log('Received amount:', amount);
 
-      // Check if bookingId and amount are valid
+      // Validate bookingId and amount
       if (typeof bookingId === 'undefined' || typeof amount === 'undefined' || isNaN(amount) || amount <= 0) {
         throw new Error('Invalid bookingId or amount value');
       }
 
-      const session = await paymentService.createCheckoutSession(
-        bookingId,
-        amount
-      );
+      const session = await paymentService.createCheckoutSession(bookingId, amount);
 
       return c.json({ sessionId: session.id, checkoutUrl: session.url });
     } catch (error) {
       console.error('Error creating checkout session:', error);
-      return c.json(
-        { success: false, error: 'Failed to create checkout session' },
-        500
-      );
+      return c.json({ success: false, error: 'Failed to create checkout session' }, 500);
     }
   },
 
@@ -48,11 +41,7 @@ export const createPayments = {
     const rawBody = await c.req.raw.text();
 
     try {
-      const event = stripe.webhooks.constructEvent(
-        rawBody,
-        sig!,
-        process.env.STRIPE_WEBHOOK_SECRET!
-      );
+      const event = stripe.webhooks.constructEvent(rawBody, sig!, process.env.STRIPE_WEBHOOK_SECRET!);
 
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object;

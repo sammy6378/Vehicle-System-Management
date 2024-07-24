@@ -21,12 +21,11 @@ export const getPayment = async ( id:number)=>{
 //     return "Payment created successfully"
 // }
 
+
 export const createPayment = () => {
   return {
     async createCheckoutSession(bookingId: number, amount: number) {
-      // Ensure amount is in cents and valid integer
       const amountInCents = Math.round(amount * 100);
-      console.log('Amount in cents:', amountInCents);
 
       if (isNaN(amountInCents) || amountInCents <= 0) {
         console.error('Invalid amount value:', amountInCents);
@@ -39,9 +38,7 @@ export const createPayment = () => {
           {
             price_data: {
               currency: 'usd',
-              product_data: {
-                name: 'Car Rental Payment',
-              },
+              product_data: { name: 'Car Rental Payment' },
               unit_amount: amountInCents,
             },
             quantity: 1,
@@ -50,9 +47,7 @@ export const createPayment = () => {
         mode: 'payment',
         success_url: `${process.env.FRONTEND_URL}/success`,
         cancel_url: `${process.env.FRONTEND_URL}/cancel`,
-        metadata: {
-          bookingId: bookingId,
-        },
+        metadata: { bookingId: bookingId.toString() },
       });
 
       return session;
@@ -60,36 +55,37 @@ export const createPayment = () => {
 
     async handleSuccessfulPayment(sessionId: string) {
       const session = await stripes.checkout.sessions.retrieve(sessionId);
-      const bookingId = parseInt(session.metadata!.bookingId);
 
-      // Handle possible null value for session.amount_total
+            // Check if session.metadata is null
+        if (!session.metadata) {
+          throw new Error('Session metadata is null');
+        }
+
+      const bookingId = parseInt(session.metadata.bookingId);
+
+      if (isNaN(bookingId)) {
+        throw new Error('Invalid bookingId in session metadata');
+      }
+
       const amountTotal = session.amount_total;
       if (amountTotal === null) {
         throw new Error('session.amount_total is null');
       }
 
-      // Update booking status
-      await db
-        .update(bookings)
-        .set({ booking_status: 'Approved' })
-        .where(eq(bookings.booking_id, bookingId));
-
-      // Create payment record
-      await db
-        .insert(payments)
-        .values({
-          booking_id: bookingId,
-          amount: amountTotal / 100,
-          payment_status: 'Approved',
-          payment_method: session.payment_method_types[0],
-          transaction_id: session.payment_intent as unknown as number,
-          payment_date: new Date(),
-        })
-        .returning();
+      await db.update(bookings).set({ booking_status: 'Approved' }).where(eq(bookings.booking_id, bookingId));
+      await db.insert(payments).values({
+        booking_id: bookingId,
+        amount: amountTotal / 100,
+        payment_status: 'Approved',
+        payment_method: session.payment_method_types[0],
+        transaction_id: session.payment_intent as unknown as number,
+        payment_date: new Date(),
+      }).returning();
     },
   };
 };
 
+    
   
 
 // // delete payment

@@ -39,8 +39,8 @@ export const createPayment = () => {
             },
           ],
           mode: "payment",
-          success_url: `https://vehicle-system.vercel.app/success`,
-          cancel_url: `https://vehicle-system.vercel.app/cancel`,
+          success_url: `${process.env.FRONTEND_URL}/success`,
+          cancel_url: `${process.env.FRONTEND_URL}/cancel`,
           metadata: {
             bookingId: bookingId,
           },

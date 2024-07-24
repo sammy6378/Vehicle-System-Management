@@ -61,6 +61,7 @@ export type TVehicleSpec = {
 
 export type tProfile ={
     bio: string;
+    user_id:number;
     location: string;
     facebook: string;
     instagram: string;
@@ -150,6 +151,9 @@ query: (newProfile) => ({
     method: 'POST',
     body: newProfile
 })
+}),
+getProfile:builder.query<tProfile[],void>({
+    query: () => 'profiles'
 }),
 getLocation:builder.query<Tlocation[],void>({
 query: () => 'locations',

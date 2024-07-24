@@ -5,15 +5,18 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/Store';
 import { FaUser, FaCog, FaSignOutAlt, FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { TUser } from '../../services/service';
+import { authService, TUser } from '../../services/service';
 import { useConfirmLogout } from '../pages/LogoutHook';
 
 export default function Nav() {
   const { openModal, ConfirmLogoutModal } = useConfirmLogout();
   const authState = useSelector((state: RootState) => state.auth);
   const user = authState.user as TUser | null;
-  const { user_name } = user as TUser;
+  const { user_name,user_id } = user as TUser;
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const {data:getProfile} = authService.useGetProfileQuery();
+
+  const img = getProfile?.find(v => v.user_id === user_id )
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -43,12 +46,12 @@ export default function Nav() {
       <div className="flex items-center ms-3 relative">
         <button onClick={toggleDropdown} type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded={dropdownVisible} aria-controls="dropdown-user">
           <span className="sr-only">Open user menu</span>
-          <img className="w-8 h-8 rounded-full" src="https://via.placeholder.com/50" alt="user photo" />
+          <img className="w-8 h-8 rounded-full" src={img?.image ? img.image : 'https://via.placeholder.com/50'} alt="user photo" />
         </button>
         {dropdownVisible && (
            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg z-10">
            <Link to="/profileForm" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-             <FaUser className="mr-2" /> Profile
+             <FaUser className="mr-2" />Add Profile
            </Link>
            <Link to="/notifications" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
              <FaBell className="mr-2" /> Notifications

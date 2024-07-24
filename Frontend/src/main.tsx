@@ -91,7 +91,7 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: '/success/:id',
+    path: '/success',
     element: <Success />,
     errorElement: <Error />,
   },

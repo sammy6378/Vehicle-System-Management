@@ -5,20 +5,17 @@ import { RootState } from '../../store/Store';
 import { TUser } from '../../services/service';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 type Profile = {
-  name: string;
-  username: string;
+  user_id: number;
   bio: string;
-  phone: string;
-  email: string;
-  address: string;
-  location: string;
   facebook: string;
   instagram: string;
   twitter: string;
+  location: string;
   image: File | null;
-}
+};
 
 const ProfileForm = () => {
   const { data: loggedUser, error, isLoading } = useGetUsersQuery();
@@ -29,16 +26,12 @@ const ProfileForm = () => {
   const { user_id: UId } = user as TUser;
 
   const [profile, setProfile] = useState<Profile>({
-    name: '',
-    username: '',
+    user_id: UId,
     bio: '',
-    phone: '',
-    email: '',
-    address: '',
-    location: '',
     facebook: '',
     instagram: '',
     twitter: '',
+    location:'',
     image: null,
   });
 
@@ -46,24 +39,20 @@ const ProfileForm = () => {
     if (loggedUser) {
       const user = loggedUser.find((user) => user.user_id === UId);
       if (user) {
-        setProfile({
-          name: user.full_name,
-          username: user.user_name,
+        setProfile((prevProfile) => ({
+          ...prevProfile,
           bio: '',
-          phone: user.contact_phone,
-          email: user.email,
-          address: user.address,
-          location: '',
           facebook: '',
           instagram: '',
           twitter: '',
+          location:'',
           image: null,
-        });
+        }));
       }
     }
   }, [loggedUser, UId]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
       ...prevProfile,
@@ -71,27 +60,46 @@ const ProfileForm = () => {
     }));
   };
 
-  const handleImageChange = (e: any) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfile((prevProfile) => ({
       ...prevProfile,
-      image: e.target.files[0],
+      image: e.target.files ? e.target.files[0] : null,
     }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('location', profile.location);
-    formData.append('facebook', profile.facebook);
-    formData.append('instagram', profile.instagram);
-    formData.append('twitter', profile.twitter);
+
+    let imageUrl = '';
     if (profile.image) {
-      formData.append('image', profile.image);
+      const formData = new FormData();
+      formData.append('file', profile.image);
+      formData.append('cloud_name', import.meta.env.VITE_CLOUD_NAME);
+      formData.append('upload_preset', import.meta.env.VITE_CLOUD_PRESET);
+
+      try {
+        const response = await axios.post('https://api.cloudinary.com/v1_1/ndekei/image/upload', formData);
+        imageUrl = response.data.secure_url; // Get the URL of the uploaded image
+      } catch (error) {
+        toast.error('Image upload failed.');
+        return;
+      }
     }
 
+    const profileData = {
+      user_id: profile.user_id,
+      bio: profile.bio,
+      facebook: profile.facebook,
+      instagram: profile.instagram,
+      twitter: profile.twitter,
+      location: profile.location,
+      image: imageUrl, // Add the image URL to the profile data
+    };
+
     try {
-      const plainFormData = Object.fromEntries(formData)
-      await createProfile(plainFormData).unwrap();
+      if(!profile.image)
+        toast('unable to find profile image')
+      await createProfile(profileData).unwrap();
       toast.success('Profile saved successfully!');
     } catch (error) {
       toast.error('Failed to save profile.');
@@ -102,33 +110,13 @@ const ProfileForm = () => {
   if (error) return <div>Error loading user data</div>;
 
   return (
-    <div className="w-full mx-auto p-10 bg-slate-200">
+    <div className="max-w-2xl mx-auto p-10 bg-slate-200 mt-5 rounded-lg">
       <ToastContainer />
-      <h2 className="text-2xl font-bold mb-6">Profile Information</h2>
+      <h2 className="text-2xl font-bold mb-6">Create Profile</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="name">Name</label>
-          <input type="text" name="name" value={profile.name} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" disabled />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="username">Username</label>
-          <input type="text" name="username" value={profile.username} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" disabled />
-        </div>
-        <div className="mb-4">
+        <div className="mb-4 col-span-1 md:col-span-2">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="bio">Bio</label>
           <textarea name="bio" value={profile.bio} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="phone">Phone</label>
-          <input type="text" name="phone" value={profile.phone} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" disabled />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">Email</label>
-          <input type="email" name="email" value={profile.email} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" disabled />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="address">Address</label>
-          <input type="text" name="address" value={profile.address} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" disabled />
         </div>
         <div className="mb-4 col-span-1 md:col-span-2">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="image">Upload Image</label>
@@ -151,14 +139,14 @@ const ProfileForm = () => {
               <input type="text" name="twitter" value={profile.twitter} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
             </div>
           </div>
-        </div>
-        <div className="mb-4 col-span-1 md:col-span-2">
+          <div className="mb-4 col-span-1 md:col-span-2">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="location">Location (Google Map Embed URL)</label>
           <input type="text" name="location" value={profile.location} onChange={handleChange} className="w-full p-2 rounded bg-white text-black border border-blue-500" />
         </div>
         <div className="mb-4 col-span-1 md:col-span-2">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="map">Google Map</label>
           <iframe src={profile.location} width="100%" height="300" className="border rounded-lg bg-white" allowFullScreen loading="lazy"></iframe>
+        </div>
         </div>
         <div className="col-span-1 md:col-span-2">
           <button type="submit" className="w-full bg-blue-500 text-white px-3 py-2 rounded-lg">Save Profile</button>

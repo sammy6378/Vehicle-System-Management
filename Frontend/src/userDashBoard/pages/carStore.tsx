@@ -40,10 +40,17 @@ function CarDash() {
       if (priceRange === ">60000") return vehicle.price > 60000;
       return true;
     };
+    const isNewOrUsedMatch = () => {
+      if (newOrUsed === "all") return true;
+      if (newOrUsed === "new") return vehicle.status;
+      if (newOrUsed === "used") return vehicle.status;
+      return true;
+    };
+
     return (
       (vehicleType === "all" || vehicle.type === vehicleType) &&
       isPriceMatch() &&
-      (newOrUsed === "all" || vehicle.status.toLowerCase() === newOrUsed.toLowerCase()) &&
+      isNewOrUsedMatch() &&
       vehicle.model.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
@@ -130,7 +137,15 @@ function CarDash() {
                     <hr />
                     <div className="mt-4 flex items-center justify-between px-3 ">
                       <Link to={`/vehicle/${vehicle.vehiclespec_id}`} className="bg-gray-500 px-4 text-white py-2 rounded text-sm">Details</Link>
-                      <Link to={`/vehicle/${vehicle.vehiclespec_id}/payments`} className="text-sm text-white font-medium bg-blue-600 px-4 py-2 rounded">Book Now</Link>
+                      {vehicle.availability ? (
+                        <Link to={`/vehicle/${vehicle.vehiclespec_id}/payments`} className="bg-green-500 text-white font-medium px-4 py-2 rounded text-sm">
+                          Book Now
+                        </Link>
+                      ) : (
+                        <button className="bg-red-500 text-white font-medium px-4 py-2 rounded text-sm cursor-not-allowed opacity-50" disabled>
+                          Booked
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))

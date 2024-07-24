@@ -33,12 +33,27 @@ export type TFleets ={
 }
 
 
+
 export const adminservices =createApi({
     reducerPath: 'adminservice',
     baseQuery:fetchBaseQuery({baseUrl:'https://car-server-busc.onrender.com'}),
     endpoints: (builder) => ({
         getBranches: builder.query<TBranch[],void>({
             query: () => 'locations',
+        }),
+        createBranches:builder.mutation<TBranch[],Partial<TBranch>>({
+            query: (branch) => ({
+                url: 'location',
+                method: 'POST',
+                body: branch,
+            }),
+        }),
+        updateBranches: builder.mutation<TBranch[],Partial<TBranch>>({
+            query: (branch) => ({
+                url: `location/${branch.location_id}`,
+                method: 'PUT',
+                body: branch,
+            }),
         }),
         getUsers: builder.query<TUser[],void>({
             query: () => 'users',

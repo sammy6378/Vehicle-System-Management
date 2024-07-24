@@ -18,7 +18,7 @@ function FleetManagement() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2000);
   }, []);
 
   const combineData = () => {

@@ -90,7 +90,7 @@ export type TBooking ={
 export type TVehicle ={
     vehicle_id: number;
     vehiclespec_id: number;
-    availability:string,
+    availability:boolean,
     rental_rate: number;
 }
 

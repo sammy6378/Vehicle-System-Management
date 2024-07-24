@@ -3,13 +3,29 @@
 import { PulseLoader } from "react-spinners";
 import { VehcileSpecApi } from "../../Slices/VehiclespecApi";
 import { Link} from "react-router-dom";
+import { ToastContainer,toast } from "react-toastify";
+
 
 const VehicleManagement = () => {
 
-  const {data:getVehicles,isLoading} = VehcileSpecApi.useGetVehicleSpecQuery();
+  const {data:getVehicles,isLoading,refetch} = VehcileSpecApi.useGetVehicleSpecQuery();
+  const [deleteVehicles] = VehcileSpecApi.useDeleteVehicleSpecMutation();
+
+  const deleteVehicle = async (id:number) =>{
+    if(window.confirm("Are you sure you want to delete this vehicle?")){
+     await deleteVehicles(id);
+     toast.success("Vehicle deleted successfully!");
+     refetch();
+    }else{
+      toast.error("Operation cancelled!");
+    }
+   
+  }
+
 
   return (
     <div className="p-6 overflow-x-auto">
+      <ToastContainer />
       <table className="min-w-full table-auto border border-slate-700 rounded-xl">
         <thead className="bg-base-100">
           <tr>
@@ -39,7 +55,7 @@ const VehicleManagement = () => {
                 <Link to={`/vehicle/${vehicle.vehiclespec_id}/edit-vehicle`} className="text-blue-500 hover:underline">Edit</Link>
               </td>
               <td className="py-2 px-4 border-b">
-                <button className="text-red-500 hover:underline">Delete</button>
+                <button onClick={() => deleteVehicle(vehicle.vehiclespec_id)} className="text-red-500 hover:underline">Delete</button>
               </td>
             </tr>
           ))}

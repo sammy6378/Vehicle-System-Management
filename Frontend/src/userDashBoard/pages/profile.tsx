@@ -11,6 +11,10 @@ export default function ProfilePage() {
 
   const authState = useSelector((state: RootState) => state.auth);
   const user = authState.user as TUser | null;
+  
+  if (!user) {
+    return null; // or return some placeholder component
+  }
   const { user_id: UId } = user as TUser;
 
   const userProfile = loggedUser?.find((user) => user.user_id === UId);

@@ -17,7 +17,9 @@ const paymentService = createPayment();
 export const createPayments = {
   async createCheckoutSession(c: Context) {
     try {
-      const { bookingId, amount } = await c.req.json();
+      const data  = await c.req.json();
+
+      const {bookingId,amount} = data;
 
       console.log('Received bookingId:', bookingId);
       console.log('Received amount:', amount);

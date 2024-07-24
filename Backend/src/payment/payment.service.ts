@@ -26,29 +26,28 @@ export const createPayment = () => {
     async createCheckoutSession(bookingId: number, amount: number) {
       // Ensure amount is in cents and valid integer
       const amountInCents = Math.round(amount * 100);
-
-      // Log the calculated amountInCents for debugging
-      console.log("Amount in cents:", amountInCents);
+      console.log('Amount in cents:', amountInCents);
 
       if (isNaN(amountInCents) || amountInCents <= 0) {
-        throw new Error("Invalid amount value after conversion to cents");
+        console.error('Invalid amount value:', amountInCents);
+        throw new Error('Invalid amount value');
       }
 
       const session = await stripes.checkout.sessions.create({
-        payment_method_types: ["card"],
+        payment_method_types: ['card'],
         line_items: [
           {
             price_data: {
-              currency: "usd",
+              currency: 'usd',
               product_data: {
-                name: "Car Rental Payment",
+                name: 'Car Rental Payment',
               },
               unit_amount: amountInCents,
             },
             quantity: 1,
           },
         ],
-        mode: "payment",
+        mode: 'payment',
         success_url: `${process.env.FRONTEND_URL}/success`,
         cancel_url: `${process.env.FRONTEND_URL}/cancel`,
         metadata: {
@@ -66,13 +65,13 @@ export const createPayment = () => {
       // Handle possible null value for session.amount_total
       const amountTotal = session.amount_total;
       if (amountTotal === null) {
-        throw new Error("session.amount_total is null");
+        throw new Error('session.amount_total is null');
       }
 
       // Update booking status
       await db
         .update(bookings)
-        .set({ booking_status: "Approved" })
+        .set({ booking_status: 'Approved' })
         .where(eq(bookings.booking_id, bookingId));
 
       // Create payment record
@@ -81,7 +80,7 @@ export const createPayment = () => {
         .values({
           booking_id: bookingId,
           amount: amountTotal / 100,
-          payment_status: "Approved",
+          payment_status: 'Approved',
           payment_method: session.payment_method_types[0],
           transaction_id: session.payment_intent as unknown as number,
           payment_date: new Date(),

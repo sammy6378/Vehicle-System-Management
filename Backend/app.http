@@ -30,12 +30,11 @@ Content-Type: application/json
 
 {
 
-    "full_name": "David Macharia",
-    "user_name":"Davy",
+    "full_name": "test purpose",
+    "user_name":"testing",
     "password":"@davy*##",
-    "email": "kdavidmacharia8485@gmail.com",
-    "contact_phone": "0742545572",
-    "address": "0400 Kitale"
+    "email": "kajjem2@gmail.com",
+    "contact_phone": "0742545572"
 }
 
 ###

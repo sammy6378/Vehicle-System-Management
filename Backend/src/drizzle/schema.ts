@@ -21,7 +21,6 @@ export const users = pgTable('users', {
   email: varchar('email'),
   full_name: varchar('full_name').notNull(),
   contact_phone: varchar('contact_phone').notNull(),
-  address: text('address').notNull(),
   role: roleEnum("role").default("user"),
   status:accountStatusEnum("status").default("active"),
   created_at: timestamp('created_at').default(sql`NOW()`).notNull(),

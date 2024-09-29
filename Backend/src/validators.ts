@@ -5,7 +5,6 @@ export const registerUserSchema = z.object({
     email: z.string(),
     user_name: z.string(),
     contact_phone: z.string(),
-    address: z.string(),
     role: z.string().optional(),
 })
 
@@ -29,7 +28,6 @@ export const User = z.object({
     user_name: z.string(),
     password: z.string(),
     contact_phone: z.string(),
-    address: z.string(),
 })
 
 export const vehicleSpec = z.object({

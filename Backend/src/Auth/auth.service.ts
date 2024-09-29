@@ -19,7 +19,6 @@ if(existingUser.length > 0){
         email: user.email,
         full_name: user.full_name,
         contact_phone: user.contact_phone,
-        address: user.address,
         role: user.role,
     }).returning({id:users.user_id}).execute();
 
@@ -63,7 +62,6 @@ export const authLoginService = async (email: string) => {
             email: user.email,
             full_name: user.full_name,
             contact_phone: user.contact_phone,
-            address: user.address,
             role: user.role,
             status:user.status,
             created_at: user.created_at,

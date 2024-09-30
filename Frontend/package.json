@@ -21,6 +21,7 @@
     "cloudinary-react": "^1.8.1",
     "daisyui": "^4.12.10",
     "dotenv": "^16.4.5",
+    "intl-tel-input": "^24.5.0",
     "lucide-react": "^0.400.0",
     "material-icons": "^1.13.12",
     "react": "^18.3.1",

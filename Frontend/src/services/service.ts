@@ -35,7 +35,6 @@ export type TRegister = {
     user_name: string;
     password: string;
     contact_phone: string;
-    address: string;
 }
 
 export type TVehicleSpec = {

@@ -11,7 +11,7 @@ import AdminSlice from "../forms/Auth/AdminSlice";
 
 // Create a transform for persisting only the token
 const tokenTransform = createTransform(
-    (inboundState:any) => {
+    (inboundState: { token: string }) => {
         return { token: inboundState.token };
       },
     (outboundState) => {

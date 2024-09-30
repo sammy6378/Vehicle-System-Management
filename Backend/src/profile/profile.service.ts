@@ -22,7 +22,6 @@ export const getProfileById = async (id:number) =>[
                     full_name:true,
                     email:true,
                     contact_phone:true,
-                    address:true
                 }
             }
         }

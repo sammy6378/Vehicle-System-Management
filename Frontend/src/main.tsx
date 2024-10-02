@@ -39,6 +39,8 @@ import FleetManagement from './AdminDashboard/pages/ManageFleet.tsx'
 import FleetDetail from './AdminDashboard/pages/FleetDetails.tsx'
 import ResetEmail from './userDashBoard/pages/VerifyEmail.tsx'
 import ResetPassword from './userDashBoard/pages/ChangePassword.tsx'
+import Form from './forms/component/form.tsx'
+
 
 const router = createBrowserRouter([
 
@@ -48,14 +50,15 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <Error />,
   },
+
   {
     path: '/register',
-    element: <Register />,
+    element: <Form><Register /></Form>,
     errorElement: <Error />,
   },
   {
     path: '/login',
-    element: <Login />,
+    element: <Form><Login /></Form>,
     errorElement: <Error />,
   },
 

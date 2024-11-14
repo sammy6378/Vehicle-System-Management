@@ -1,6 +1,6 @@
 
 import bycrpt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+
 
 
 // get all users
@@ -38,58 +38,34 @@ export const updateUser = async (id:number, res:any): Promise<string | undefined
     return "User updated successfully"
 }
 
-// reset password
-// export const resetPassword = async (email: string, password: string) => {
-//     const hashedPassword = await bycrpt.hash(password, 10);
-    
-//     // First, get the user based on the email
-//     const user = await db
-//     .query.users.findFirst({
-//       where: eq(users.email, email),
-//     });
-  
-//     if (!user) {
-//       throw new Error('User not found');
-//     }
-  
-//     // Update the password in the authentication table
-//     await db
-//       .update(authentication)
-//       .set({ password: hashedPassword })
-//       .where(eq(authentication.user_id, user.user_id));
-  
-//     return "Password reset successfully";
-//   };
-
-
-const JWT_SECRET = process.env.JWT_SECRET as string;
-// Function to reset password using the token
-export const resetPassword = async (token: string, newPassword: string) => {
+// reset user password
+export const resetPassword = async (email: string, newPassword: string) => {
   try {
-    // Verify the token
-    const decoded: any = jwt.verify(token, JWT_SECRET);
-
-    // Get the user from the token payload
-    const userId = decoded.userId;
+    // Find the user by email
     const user = await db.query.users.findFirst({
-      where: eq(users.user_id, userId),
+      where: eq(users.email, email),
     });
 
     if (!user) {
-      throw new Error('Invalid token or user not found.');
+      throw new Error('User not found.');
     }
 
     // Hash the new password
     const hashedPassword = await bycrpt.hash(newPassword, 10);
 
     // Update the password in the authentication table
-    await db
+    const updateResult = await db
       .update(authentication)
       .set({ password: hashedPassword })
-      .where(eq(authentication.user_id, userId));
+      .where(eq(authentication.user_id, user.user_id));
+
+    if (!updateResult) {
+      throw new Error('Password update failed.');
+    }
 
     return "Password reset successfully.";
-  } catch (error) {
-    throw new Error('Invalid or expired token.');
+  } catch (error: any) {
+    console.error('Service error:', error.message);
+    throw new Error('Unable to reset password.');
   }
 };

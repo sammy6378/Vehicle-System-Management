@@ -52,10 +52,10 @@ export const forgotPassword = async (c: Context) => {
   }
 };
 
-
-// reset password  settings
+// reset password settings
 export const resetPasswordN = async (c: Context) => {
   const { token, password } = await c.req.json();
+  
   if (!token || !password) {
     return c.json({ error: 'Invalid request data' }, 400);
   }
@@ -63,8 +63,11 @@ export const resetPasswordN = async (c: Context) => {
   try {
     const secret = process.env.JWT_SECRET as string;
     const decoded: any = verify(token, secret);
+
+    // Get the user's email or userId from the decoded token
     const email = decoded.email;
 
+    // Call the service to reset the password
     const userReset = await resetPassword(email, password);
 
     if (userReset === "Password reset successfully") {
@@ -73,7 +76,7 @@ export const resetPasswordN = async (c: Context) => {
       throw new Error('Failed to reset password');
     }
   } catch (error: any) {
-    return c.json({ error: error.message }, 500);
+    console.error('Reset password error:', error.message);
+    return c.json({ error: 'Failed to reset password' }, 500); // Avoid exposing detailed errors
   }
 };
- 

@@ -97,11 +97,13 @@ import bycrpt from 'bcrypt'
 export const register = async (c:Context)=>{
     try{
         const user = await c.req.json()
+
         const password = user.password;
         const hashedPassword = await bycrpt.hash(password,10);
         user.password = hashedPassword;
 
         const service = await createService(user);
+        
         if(!service){
             return c.text("user not created",404)
         }else{

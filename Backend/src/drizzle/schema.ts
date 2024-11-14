@@ -88,7 +88,7 @@ export const bookingStatus = pgEnum( "Status", ['Pending', 'Approved', 'Rejected
 // booking table
 export const bookings = pgTable('bookings', {
     booking_id: serial('booking_id').notNull().primaryKey(),
-    user_id: integer('user_id').notNull().references(() => users.user_id),
+    user_id: integer('user_id').notNull().references(() => users.user_id,{onDelete:"cascade"}),
     vehiclespec_id: integer('vehiclespec_id').notNull().references(() => vehicleSpecifications.vehiclespec_id,{onDelete:"cascade"}),
     location_id: integer('location_id').notNull().references(() => locations.location_id,{onDelete:"cascade"}),
     booking_date: date('booking_date').notNull(),
